@@ -1,12 +1,10 @@
-# Python Final Project 2024
-## Student Name: EVELYNE MUKARUKUNDO
-## Student ID: 2414737
-## Project Title: Recipe Manager and Meal Planner
+# Python Final Project 2025
+## Students Names: EVELYNE, Bunita, Alex , Hope , Anabella
+
+## Project Title: Book Master
 
 This repository contains my final project for the Script language(Python course).
 
 - `proposal.md`: Project proposal
-- `project_exploration.ipynb`: Jupyter notebook for project exploration and prototyping
--  `SOLUTIONS.md`: the file for problems i encountered and how i solved them
--  'PythonFinalProject' : the folder that contains all the files that i have in my project
-- 
+-  'Diagrams' : the folder that contains all the diagrams that we created in this project
+  
