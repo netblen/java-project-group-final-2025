@@ -1,5 +1,5 @@
 # Python Final Project 2025
-## Students Names: EVELYNE, Bunita, Alex , Hope , Anabella
+## Students Names: Evelyne, Bunita, Alex , Hope , Anabella
 
 ## Project Title: Book Master
 
