@@ -5,6 +5,6 @@
 
 This repository contains my final project for the Script language(Python course).
 
-- `proposal.md`: Project proposal
+- `decription.md`: Project proposal
 -  'Diagrams' : the folder that contains all the diagrams that we created in this project
   
