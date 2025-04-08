@@ -14,7 +14,8 @@ public class Main {
     public static void main(String[] args) {
         try {
             // Connect to the H2 database
-            Connection conn = DriverManager.getConnection("jdbc:h2:./bookstore", "sa", "");
+            //Connection conn = DriverManager.getConnection("jdbc:h2:./bookstore", "sa", "");
+            Connection conn = DriverManager.getConnection("jdbc:h2:file:./bookstore", "sa", "");
 
             // Initialize the database from schema.sql
             DbConnection.initializeDatabase(conn);
@@ -42,7 +43,8 @@ public class Main {
             }
 
             // ✅ Start the backend API server
-            BookApiServer.start();
+            // Al final de tu main, agrega esto:
+            BookApiServer.start(conn);
 
         } catch (Exception e) {
             System.err.println("❌ Error:");

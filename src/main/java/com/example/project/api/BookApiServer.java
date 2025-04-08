@@ -1,47 +1,32 @@
 package com.example.project.api;
 
 import com.example.project.dao.BookDao;
-import com.example.project.database.DbConnection;
 import com.example.project.model.Book;
-import com.google.gson.Gson;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.util.List;
 
 import static spark.Spark.*;
 
+import java.sql.Connection;
+import java.util.List;
+
 public class BookApiServer {
 
-    public static void start() {
-        port(4567); // Runs on http://localhost:4567
+    public static void start(Connection conn) {
+        BookDao bookDao = new BookDao(conn);
 
-        Gson gson = new Gson();
+        // Endpoint: GET /books
+        get("/books", (req, res) -> {
+            res.type("application/json");
+            List<Book> books = bookDao.listAll();
+            StringBuilder json = new StringBuilder("[");
+            for (int i = 0; i < books.size(); i++) {
+                Book b = books.get(i);
+                json.append(String.format("{\"title\":\"%s\",\"author\":\"%s\"}", b.getTitle(), b.getAuthor()));
+                if (i < books.size() - 1) json.append(",");
+            }
+            json.append("]");
+            return json.toString();
+        });
 
-        try {
-            // Connect and initialize the database
-            Connection conn = DriverManager.getConnection("jdbc:h2:./bookstore", "sa", "");
-            DbConnection.initializeDatabase(conn);
-
-            BookDao dao = new BookDao(conn);
-
-            // GET all books
-            get("/books", (req, res) -> {
-                List<Book> books = dao.listAll();
-                res.type("application/json");
-                return gson.toJson(books);
-            });
-
-            // POST new book (JSON body)
-            post("/books", (req, res) -> {
-                Book book = gson.fromJson(req.body(), Book.class);
-                dao.add(book);
-                res.status(201);
-                return "✅ Book added!";
-            });
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        System.out.println("🚀 API Server running at http://localhost:4567/books");
     }
 }
