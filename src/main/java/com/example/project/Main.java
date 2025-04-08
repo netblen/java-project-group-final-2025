@@ -2,6 +2,7 @@ package com.example.project;
 
 import com.example.project.database.DbConnection;
 import com.example.project.api.BookApiService;
+import com.example.project.api.BookApiServer;
 import com.example.project.dao.BookDao;
 import com.example.project.model.Book;
 
@@ -33,14 +34,16 @@ public class Main {
             System.out.println("Title: " + apiBook.getTitle());
             System.out.println("Author: " + apiBook.getAuthor());
 
-            // Optional: print all books in DB
+            // Print all books
             System.out.println("\n📘 All books in database:");
             List<Book> allBooks = bookDao.listAll();
             for (Book b : allBooks) {
                 System.out.println("- " + b.getTitle() + " by " + b.getAuthor());
             }
 
-            conn.close();
+            // ✅ Start the backend API server
+            BookApiServer.start();
+
         } catch (Exception e) {
             System.err.println("❌ Error:");
             e.printStackTrace();

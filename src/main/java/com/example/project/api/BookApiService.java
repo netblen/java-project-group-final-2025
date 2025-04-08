@@ -29,6 +29,7 @@ public class BookApiService {
         String author = info.getJSONArray("authors").getString(0);
         String genre = info.has("categories") ? info.getJSONArray("categories").getString(0) : "General";
 
-        return new Book(999, fetchedTitle, author, genre, 0.0, 0, true);
+        int id = (int) (Math.random() * 100000);
+        return new Book(id, fetchedTitle, author, genre, 0.0, 0, true);
     }
 }
