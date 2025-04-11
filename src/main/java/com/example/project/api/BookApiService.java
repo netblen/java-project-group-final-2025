@@ -1,12 +1,14 @@
 package com.example.project.api;
 
 import com.example.project.model.Book;
-import org.json.JSONObject;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class BookApiService {
@@ -27,9 +29,18 @@ public class BookApiService {
 
         String fetchedTitle = info.getString("title");
         String author = info.getJSONArray("authors").getString(0);
-        String genre = info.has("categories") ? info.getJSONArray("categories").getString(0) : "General";
+
+        List<String> genres = new ArrayList<>();
+        if (info.has("categories")) {
+            JSONArray categories = info.getJSONArray("categories");
+            for (int i = 0; i < categories.length(); i++) {
+                genres.add(categories.getString(i));
+            }
+        } else {
+            genres.add("General");
+        }
 
         int id = (int) (Math.random() * 100000);
-        return new Book(id, fetchedTitle, author, genre, 0.0, 0, true);
+        return new Book(id, fetchedTitle, author, 0.0, 0, true, genres);
     }
 }

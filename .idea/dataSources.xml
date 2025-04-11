@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="bookstore" uuid="a3f3a36c-181d-4cd5-9a41-86b93ad41f8e">
+    <data-source source="LOCAL" name="bookstore" uuid="5d8acd0c-ff48-40f1-8ff8-cf35676ced0e">
       <driver-ref>h2.unified</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.h2.Driver</jdbc-driver>
-      <jdbc-url>jdbc:h2:$PROJECT_DIR$/bookstore</jdbc-url>
+      <jdbc-url>jdbc:h2:file:./bookstore</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
