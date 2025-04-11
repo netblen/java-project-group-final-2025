@@ -14,42 +14,47 @@ import java.sql.DriverManager;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Main {
+
+    // Logger instance for this class
+    private static final Logger logger = Logger.getLogger(Main.class.getName());
+
     public static void main(String[] args) {
         try {
-            // Connect to the H2 database
+            // 1. Connect to the H2 database (persistent file)
             Connection conn = DriverManager.getConnection("jdbc:h2:file:./bookstore", "sa", "");
 
-            // Initialize the database from schema + data
-            DbConnection.initializeDatabase(conn);
-            System.out.println("✅ Database initialized successfully.");
+            // 2. Initialize schema if needed
+            DbConnection.initializeSchema(conn);
 
-            // ----------------- BOOKS ------------------
+            // 3. Set up Book DAO
             BookDao bookDao = new BookDao(conn);
 
-            // Fetch a book from Google Books API
-            Book apiBook = BookApiService.fetchBookFromGoogle("Java Programming");
-
-            // Save the fetched book to the database
-            bookDao.add(apiBook);
-
-            // Confirm book added
-            System.out.println("📚 Book fetched from API and saved:");
-            System.out.println("Title: " + apiBook.getTitle());
-            System.out.println("Author: " + apiBook.getAuthor());
-
-            // List all books
-            System.out.println("\n📘 All books in database:");
-            List<Book> allBooks = bookDao.listAll();
-            for (Book b : allBooks) {
-                System.out.println("- " + b.getTitle() + " by " + b.getAuthor() + " | Genres: " + String.join(", ", b.getGenres()));
+            // 4. Load test data ONLY if DB is empty
+            if (bookDao.listAll().isEmpty()) {
+                DbConnection.loadTestData(conn);
+                logger.info("📦 Data seeded because database was empty.");
+            } else {
+                logger.info("📦 Data already exists — skipping seed.");
             }
 
-            // ----------------- ORDERS ------------------
-            OrderDao orderDao = new OrderDao(conn);
+            // 5. Fetch a book from Google Books API and save it
+            Book apiBook = BookApiService.fetchBookFromGoogle("Java Programming");
+            bookDao.add(apiBook);
+            logger.info("📚 Book fetched from API and saved:\nTitle: " + apiBook.getTitle() + "\nAuthor: " + apiBook.getAuthor());
 
-            // Place an order using some of the books in the DB
+            // 6. List all books
+            logger.info("\n📘 All books in database:");
+            List<Book> allBooks = bookDao.listAll();
+            for (Book b : allBooks) {
+                logger.info("- " + b.getTitle() + " by " + b.getAuthor() + " | Genres: " + String.join(", ", b.getGenres()));
+            }
+
+            // 7. Place a test order
+            OrderDao orderDao = new OrderDao(conn);
             if (allBooks.size() >= 2) {
                 List<OrderDetail> items = Arrays.asList(
                         new OrderDetail(allBooks.get(0).getBookId(), 1, allBooks.get(0).getBookPrice()),
@@ -58,7 +63,7 @@ public class Main {
 
                 Order testOrder = new Order(
                         0,
-                        1, // Assuming customerId 1 exists in your DB
+                        1, // Assuming customerId 1 exists
                         allBooks.get(0).getBookPrice() + (2 * allBooks.get(1).getBookPrice()),
                         new Timestamp(System.currentTimeMillis()),
                         "Processing",
@@ -68,12 +73,11 @@ public class Main {
                 orderDao.placeOrder(testOrder);
             }
 
-            // ✅ Start the backend API server
+            // 8. Start backend API server
             BookApiServer.start(conn);
 
         } catch (Exception e) {
-            System.err.println("❌ Error:");
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "❌ Unexpected error occurred in Main:", e);
         }
     }
 }
