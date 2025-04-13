@@ -9,7 +9,7 @@ public class Book {
     private double bookPrice;
     private int stock;
     private boolean isAvailable;
-    private List<String> genres; // NEW: list of genre names
+    private List<String> genres;
 
     public Book(int bookId, String title, String author, double bookPrice, int stock, boolean isAvailable, List<String> genres) {
         this.bookId = bookId;
@@ -20,6 +20,8 @@ public class Book {
         this.isAvailable = isAvailable;
         this.genres = genres;
     }
+    public Book() {
+    }
 
     // Getters
     public int getBookId() { return bookId; }
@@ -29,4 +31,14 @@ public class Book {
     public int getStock() { return stock; }
     public boolean isAvailable() { return isAvailable; }
     public List<String> getGenres() { return genres; }
+
+    //Setters
+    public void setBookId(int bookId) { this.bookId = bookId; }
+    public void setTitle(String title) { this.title = title; }
+    public void setAuthor(String author) { this.author = author; }
+    public void setBookPrice(double bookPrice) { this.bookPrice = bookPrice; }
+    public void setStock(int stock) { this.stock = stock; }
+    public void setAvailable(boolean available) { isAvailable = available; }
+    public void setGenres(List<String> genres) { this.genres = genres; }
+
 }

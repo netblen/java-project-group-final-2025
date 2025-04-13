@@ -1,7 +1,6 @@
 package com.example.project.dao;
 
 import com.example.project.model.Genre;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

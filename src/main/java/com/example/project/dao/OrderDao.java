@@ -2,7 +2,6 @@ package com.example.project.dao;
 
 import com.example.project.model.Order;
 import com.example.project.model.OrderDetail;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

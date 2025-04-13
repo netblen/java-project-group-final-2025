@@ -3,7 +3,6 @@ package com.example.project.api;
 import com.example.project.model.Book;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -42,5 +41,7 @@ public class BookApiService {
 
         int id = (int) (Math.random() * 100000);
         return new Book(id, fetchedTitle, author, 0.0, 0, true, genres);
+
+
     }
 }

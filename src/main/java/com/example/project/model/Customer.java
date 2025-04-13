@@ -15,6 +15,8 @@ public class Customer {
         this.password = password;
         this.userType = userType;
     }
+    public Customer() {
+    }
 
     // Getters
     public int getCustomerId() { return customerId; }

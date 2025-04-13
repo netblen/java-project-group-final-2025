@@ -1,7 +1,6 @@
 package com.example.project.dao;
 
 import com.example.project.model.Inventory;
-
 import java.sql.*;
 
 public class InventoryDao {

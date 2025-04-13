@@ -1,10 +1,7 @@
 package com.example.project.dao;
 
 import com.example.project.model.ShoppingCart;
-
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ShoppingCartDao {
     private final Connection conn;

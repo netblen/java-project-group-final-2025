@@ -1,17 +1,16 @@
 package com.example.project.api;
 
-import com.example.project.dao.BookDao;
+import com.example.project.dao.impl.BookDaoimpl;
 import com.example.project.model.Book;
 
 import static spark.Spark.*;
-
 import java.sql.Connection;
 import java.util.List;
 
 public class BookApiServer {
 
     public static void start(Connection conn) {
-        BookDao bookDao = new BookDao(conn);
+        BookDaoimpl bookDao = new BookDaoimpl(conn);
 
         // Endpoint: GET /books
         get("/books", (req, res) -> {
