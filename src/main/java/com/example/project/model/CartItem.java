@@ -11,6 +11,8 @@ public class CartItem {
         this.bookId = bookId;
         this.quantity = quantity;
     }
+    public CartItem() {
+    }
 
     // Getters
     public int getCartId() { return cartId; }

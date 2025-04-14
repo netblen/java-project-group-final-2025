@@ -13,6 +13,8 @@ public class ShoppingCart {
         this.customerId = customerId;
         this.createdAt = createdAt;
     }
+    public ShoppingCart() {
+    }
 
     // Getters
     public int getCartId() { return cartId; }

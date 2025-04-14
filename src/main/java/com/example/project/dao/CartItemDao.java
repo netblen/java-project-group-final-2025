@@ -1,60 +1,57 @@
 package com.example.project.dao;
 
 import com.example.project.model.CartItem;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
-public class CartItemDao {
-    private final Connection conn;
+public interface CartItemDao {
 
-    public CartItemDao(Connection conn) {
-        this.conn = conn;
-    }
+    /**
+     * Add a new item to the shopping cart
+     * @param item the item to add
+     */
+    void addItem(CartItem item);
 
-    public void addItem(CartItem item) throws SQLException {
-        String sql = "INSERT INTO ShoppingCart_Items (cartId, bookId, shoppingCartQuantity) VALUES (?, ?, ?)";
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setInt(1, item.getCartId());
-        stmt.setInt(2, item.getBookId());
-        stmt.setInt(3, item.getQuantity());
-        stmt.executeUpdate();
-        stmt.close();
-    }
+    /**
+     * Get all items in a shopping cart
+     * @param cartId the cart ID
+     * @return list of cart items
+     */
+    List<CartItem> getItemsInCart(int cartId);
 
-    public List<CartItem> getItemsInCart(int cartId) throws SQLException {
-        List<CartItem> items = new ArrayList<>();
-        String sql = "SELECT * FROM ShoppingCart_Items WHERE cartId = ?";
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setInt(1, cartId);
-        ResultSet rs = stmt.executeQuery();
-        while (rs.next()) {
-            items.add(new CartItem(
-                    cartId,
-                    rs.getInt("bookId"),
-                    rs.getInt("shoppingCartQuantity")
-            ));
-        }
-        stmt.close();
-        return items;
-    }
+    /**
+     * Remove a specific item from the shopping cart
+     * @param cartId the cart ID
+     * @param bookId the book ID to remove
+     */
+    void removeItem(int cartId, int bookId);
 
-    public void removeItem(int cartId, int bookId) throws SQLException {
-        String sql = "DELETE FROM ShoppingCart_Items WHERE cartId = ? AND bookId = ?";
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setInt(1, cartId);
-        stmt.setInt(2, bookId);
-        stmt.executeUpdate();
-        stmt.close();
-    }
+    /**
+     * Update the quantity of an item in the cart
+     * @param cartId the cart ID
+     * @param bookId the book ID
+     * @param newQty the new quantity
+     */
+    void updateQuantity(int cartId, int bookId, int newQty);
 
-    public void updateQuantity(int cartId, int bookId, int newQty) throws SQLException {
-        String sql = "UPDATE ShoppingCart_Items SET shoppingCartQuantity = ? WHERE cartId = ? AND bookId = ?";
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setInt(1, newQty);
-        stmt.setInt(2, cartId);
-        stmt.setInt(3, bookId);
-        stmt.executeUpdate();
-        stmt.close();
-    }
+    /**
+     * Clear all items in a cart
+     * @param cartId the cart ID
+     */
+    void clearCart(int cartId);
+
+    /**
+     * Check if a book is already in the cart
+     * @param cartId the cart ID
+     * @param bookId the book ID
+     * @return true if the item exists, false otherwise
+     */
+    boolean itemExists(int cartId, int bookId);
+
+    /**
+     * Get the current quantity of a book in the cart
+     * @param cartId the cart ID
+     * @param bookId the book ID
+     * @return quantity of the book in the cart
+     */
+    int getQuantity(int cartId, int bookId);
 }
