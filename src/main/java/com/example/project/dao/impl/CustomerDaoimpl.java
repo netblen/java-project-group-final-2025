@@ -97,4 +97,24 @@ public class CustomerDaoimpl implements CustomerDAO {
             return false;
         }
     }
+
+    public Customer getByEmail(String email) {
+        String sql = "SELECT * FROM Customer WHERE email = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new Customer(
+                        rs.getInt("customerId"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("userType")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

@@ -3,6 +3,7 @@ package com.example.project.dao.impl;
 import com.example.project.model.CartItem;
 import com.example.project.dao.CartItemDao;
 import com.example.project.model.CartItemDetails;
+import com.example.project.model.Customer;
 
 import java.sql.*;
 import java.util.ArrayList;

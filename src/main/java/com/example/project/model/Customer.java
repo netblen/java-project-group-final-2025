@@ -15,6 +15,12 @@ public class Customer {
         this.password = password;
         this.userType = userType;
     }
+    public Customer(int customerId, String name, String email, String password) {
+        this.customerId = customerId;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
     public Customer() {
     }
 
