@@ -16,16 +16,19 @@ public class CustomerDaoimpl implements CustomerDAO {
 
     @Override
     public boolean add(Customer customer) {
-        String sql = "INSERT INTO Customer (customerId, name, email, password, userType) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Customer (name, email, password, userType) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, customer.getCustomerId());
-            stmt.setString(2, customer.getName());
-            stmt.setString(3, customer.getEmail());
-            stmt.setString(4, customer.getPassword());
-            stmt.setString(5, customer.getUserType());
-            return stmt.executeUpdate() > 0;
+            stmt.setString(1, customer.getName());
+            stmt.setString(2, customer.getEmail());
+            stmt.setString(3, customer.getPassword());
+            stmt.setString(4, customer.getUserType());
+
+            int rowsInserted = stmt.executeUpdate();
+            System.out.println("📌 Rows inserted: " + rowsInserted);
+            return rowsInserted > 0;
         } catch (SQLException e) {
-            System.err.println("Error adding customer: " + e.getMessage());
+            System.err.println("❌ Error adding customer: " + e.getMessage());
+            e.printStackTrace(); // 🔥 THIS IS WHAT WE NEED
             return false;
         }
     }

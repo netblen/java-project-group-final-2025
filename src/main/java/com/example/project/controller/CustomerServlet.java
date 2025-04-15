@@ -26,7 +26,10 @@ public class CustomerServlet extends HttpServlet {
             Class.forName("org.h2.Driver");
             Connection conn = DriverManager.getConnection("jdbc:h2:file:./bookstore", "sa", "");
 
+            System.out.println("📦 Connected DB URL: " + conn.getMetaData().getURL());
+
             DbConnection.initializeSchema(conn); // optional for customers
+            conn.setAutoCommit(true);
 
             customerDao = new CustomerDaoimpl(conn);
             objectMapper = new ObjectMapper();
@@ -65,14 +68,42 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            Customer customer = objectMapper.readValue(req.getReader(), Customer.class);
-            customerDao.add(customer);
-            resp.setStatus(HttpServletResponse.SC_CREATED);
+            String firstName = req.getParameter("firstName");
+            String lastName = req.getParameter("lastName");
+            String email = req.getParameter("email");
+            String password = req.getParameter("password");
+            String userType = req.getParameter("userType");
+            String fullName = firstName + " " + lastName;
+
+            System.out.println("📥 Received registration:");
+            System.out.println("    Name: " + fullName);
+            System.out.println("    Email: " + email);
+            System.out.println("    User Type: " + userType);
+
+            Customer customer = new Customer();
+            customer.setName(fullName);
+            customer.setEmail(email);
+            customer.setPassword(password);
+            customer.setUserType(userType);
+
+            boolean success = customerDao.add(customer);
+            System.out.println("📤 INSERT success: " + success);
+
+            if (success) {
+                resp.setStatus(HttpServletResponse.SC_CREATED);
+                resp.getWriter().write("✅ Customer created successfully.");
+            } else {
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                resp.getWriter().write("❌ Failed to add customer.");
+            }
         } catch (Exception e) {
+            System.err.println("❌ Exception in doPost: " + e.getMessage());
+            e.printStackTrace();  // This will show exactly what went wrong
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().write("⚠️ Error adding customer: " + e.getMessage());
         }
     }
+
 
     // PUT: Update email
     @Override
