@@ -246,7 +246,7 @@
         </div>
         <div class="col-md-3 col-6">
             <div class="card book-card h-100">
-                <img src="images/brit.png" class="card-img-top" alt="Book Cover">
+                <img src="images/2.png" class="card-img-top" alt="Book Cover">
                 <div class="card-body">
                     <h6 class="card-title">The Vanishing Half</h6>
                     <p class="card-text text-muted small">Brit Bennett</p>
@@ -343,7 +343,7 @@
         document.querySelectorAll('.btn-primary').forEach(button => {
             if (button.textContent.trim() === 'Add to Cart') {
                 button.addEventListener('click', function() {
-                    let currentCount = parseInt(localStorage.getItem('cartCount') || 0;
+                    let currentCount = parseInt(localStorage.getItem('cartCount') || 0);
                     currentCount++;
                     localStorage.setItem('cartCount', currentCount);
                     document.querySelector('.badge.bg-primary').textContent = currentCount;
