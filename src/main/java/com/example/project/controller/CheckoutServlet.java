@@ -32,7 +32,7 @@ public class CheckoutServlet extends HttpServlet {
             Class.forName("org.h2.Driver");
             Connection conn = DriverManager.getConnection("jdbc:h2:file:./bookstore", "sa", "");
 
-            DbConnection.initializeSchema(conn); // por si acaso
+            DbConnection.initializeSchema(conn);
 
             cartDao = new ShoppingCartDaoimpl(conn);
             cartItemDao = new CartItemDaoimpl(conn);
@@ -78,11 +78,10 @@ public class CheckoutServlet extends HttpServlet {
                 OrderDetail detail = new OrderDetail();
                 detail.setBookId(item.getBookId());
                 detail.setOrderQuantity(item.getQuantity());
-                detail.setOrderPrice(item.getPrice()); // ya viene el precio por unidad
+                detail.setOrderPrice(item.getPrice());
                 orderDetails.add(detail);
             }
 
-            // ✅ Calcular el total real solo al final
             double total = orderDetails.stream()
                     .mapToDouble(d -> d.getOrderPrice() * d.getOrderQuantity())
                     .sum();
@@ -92,7 +91,7 @@ public class CheckoutServlet extends HttpServlet {
             order.setOrderDate(new java.sql.Timestamp(System.currentTimeMillis()));
             order.setOrderStatus("PENDING");
             order.setDetails(orderDetails);
-            order.setTotalPrice(total); // ahora sí es exacto
+            order.setTotalPrice(total);
 
             orderDao.placeOrder(order);
             cartItemDao.clearCart(cartId);
