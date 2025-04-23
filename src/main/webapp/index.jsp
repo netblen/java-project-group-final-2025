@@ -80,16 +80,33 @@
 
             </ul>
             <ul class="navbar-nav">
+                <%
+                    com.example.project.model.Customer currentUser = (com.example.project.model.Customer) session.getAttribute("currentUser");
+                    if (currentUser != null) {
+                %>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-user"></i> Welcome, <%= currentUser.getName() %></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="logout.jsp"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </li>
+                <%
+                } else {
+                %>
                 <li class="nav-item">
                     <a class="nav-link" href="login.jsp"><i class="fas fa-sign-in-alt"></i> Login</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="register.jsp"><i class="fas fa-user-plus"></i> Register</a>
                 </li>
+                <%
+                    }
+                %>
                 <li class="nav-item">
                     <a class="nav-link" href="cart.jsp"><i class="fas fa-shopping-cart"></i> Cart <span class="badge bg-primary">0</span></a>
                 </li>
             </ul>
+
         </div>
     </div>
 </nav>
