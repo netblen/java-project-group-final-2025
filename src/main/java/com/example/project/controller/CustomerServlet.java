@@ -39,9 +39,35 @@ public class CustomerServlet extends HttpServlet {
     }
 
     // GET all customers
+    //@Override
+    //protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+//        String idParam = req.getParameter("id");
+//        resp.setContentType("application/json");
+//
+//        try {
+//            if (idParam != null) {
+//                int id = Integer.parseInt(idParam);
+//                Customer customer = customerDao.getById(id);
+//                if (customer != null) {
+//                    objectMapper.writeValue(resp.getWriter(), customer);
+//                } else {
+//                    resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+//                    resp.getWriter().write("{\"error\":\"Customer not found\"}");
+//                }
+//            } else {
+//                List<Customer> customers = customerDao.listAll();
+//                objectMapper.writeValue(resp.getWriter(), customers);
+//            }
+//        } catch (Exception e) {
+//            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+//            resp.getWriter().write("⚠️ Error: " + e.getMessage());
+//        }
+//    }
+// GET all customers or customer by ID or Email
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String idParam = req.getParameter("id");
+        String emailParam = req.getParameter("email");
         resp.setContentType("application/json");
 
         try {
@@ -52,7 +78,15 @@ public class CustomerServlet extends HttpServlet {
                     objectMapper.writeValue(resp.getWriter(), customer);
                 } else {
                     resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                    resp.getWriter().write("{\"error\":\"Customer not found\"}");
+                    resp.getWriter().write("{\"error\":\"Customer not found by ID\"}");
+                }
+            } else if (emailParam != null) {  //
+                Customer customer = customerDao.getByEmail(emailParam);
+                if (customer != null) {
+                    objectMapper.writeValue(resp.getWriter(), customer);
+                } else {
+                    resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    resp.getWriter().write("{\"error\":\"Customer not found by email\"}");
                 }
             } else {
                 List<Customer> customers = customerDao.listAll();
@@ -63,7 +97,6 @@ public class CustomerServlet extends HttpServlet {
             resp.getWriter().write("⚠️ Error: " + e.getMessage());
         }
     }
-
     // POST: Add new customer
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -142,4 +175,5 @@ public class CustomerServlet extends HttpServlet {
             resp.getWriter().write("⚠️ Error deleting customer: " + e.getMessage());
         }
     }
+
 }

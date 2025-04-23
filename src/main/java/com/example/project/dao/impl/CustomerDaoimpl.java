@@ -28,7 +28,7 @@ public class CustomerDaoimpl implements CustomerDAO {
             return rowsInserted > 0;
         } catch (SQLException e) {
             System.err.println("❌ Error adding customer: " + e.getMessage());
-            e.printStackTrace(); // 🔥 THIS IS WHAT WE NEED
+            e.printStackTrace();
             return false;
         }
     }
