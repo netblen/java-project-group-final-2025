@@ -28,10 +28,12 @@ INSERT INTO Book_Genres (bookId, genreId) VALUES
 INSERT INTO Customer (name, email, password, userType)
 VALUES
     ('Alice Johnson', 'alice@example.com', 'alice123', 'regular'),
-    ('Bob Smith', 'bob@example.com', 'bob123', 'regular');
+    ('Bob Smith', 'bob@example.com', 'bob123', 'regular'),
+    ('Main Admin', 'admin@bookmaster.com', 'admin123', 'admin');
 
 -- ADMIN
 INSERT INTO Admin (actionType) VALUES ('Created system'), ('Initialized inventory');
+
 
 -- ORDERS
 INSERT INTO Orders (customerId, totalPrice, orderStatus)

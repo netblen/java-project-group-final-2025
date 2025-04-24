@@ -27,10 +27,38 @@
         .sort-dropdown .dropdown-toggle::after {
             display: none;
         }
+
+        .cart-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            transform: translateY(-100px);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .cart-notification.show {
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
 <%@ include file="navbar.jsp" %>
+
+<!-- Cart Added Notification -->
+<div class="toast cart-notification" role="alert" aria-live="assertive" aria-atomic="true" id="cartNotification">
+    <div class="toast-header bg-success text-white">
+        <i class="fas fa-check-circle me-2"></i>
+        <strong class="me-auto">Success</strong>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+        <span id="cartNotificationMessage">Item added to your cart!</span>
+        <div class="mt-2 pt-2 border-top">
+            <a href="cart.jsp" class="btn btn-outline-success btn-sm">View Cart</a>
+        </div>
+    </div>
+</div>
 
 <div class="container py-5">
     <div class="row">
@@ -140,7 +168,15 @@
                             </div>
                             <div class="mt-3 d-grid gap-2">
                                 <button class="btn btn-outline-primary">View Details</button>
-                                <button class="btn btn-primary">Add to Cart</button>
+                                <button class="btn btn-primary add-to-cart-btn"
+                                        data-id="1"
+                                        data-title="The Invisible Life of Addie LaRue"
+                                        data-author="V.E. Schwab"
+                                        data-genre="Fantasy"
+                                        data-price="14.99"
+                                        data-img="images/book-grid1.jpg">
+                                    Add to Cart
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -158,7 +194,15 @@
                             </div>
                             <div class="mt-3 d-grid gap-2">
                                 <button class="btn btn-outline-primary">View Details</button>
-                                <button class="btn btn-primary">Add to Cart</button>
+                                <button class="btn btn-primary add-to-cart-btn"
+                                        data-id="2"
+                                        data-title="Klara and the Sun"
+                                        data-author="Kazuo Ishiguro"
+                                        data-genre="Sci-Fi"
+                                        data-price="13.99"
+                                        data-img="images/book-grid2.jpg">
+                                    Add to Cart
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -176,7 +220,15 @@
                             </div>
                             <div class="mt-3 d-grid gap-2">
                                 <button class="btn btn-outline-primary">View Details</button>
-                                <button class="btn btn-primary">Add to Cart</button>
+                                <button class="btn btn-primary add-to-cart-btn"
+                                        data-id="3"
+                                        data-title="The Four Winds"
+                                        data-author="Kristin Hannah"
+                                        data-genre="Historical"
+                                        data-price="12.99"
+                                        data-img="images/book-grid3.jpg">
+                                    Add to Cart
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -204,5 +256,108 @@
 </div>
 
 <%@ include file="footer.jsp" %>
+
+<script>
+    // Cart functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize cart if it doesn't exist
+        if (!localStorage.getItem('bookCart')) {
+            localStorage.setItem('bookCart', JSON.stringify([]));
+        }
+
+        // Update cart icon count
+        updateCartCount();
+
+        // Add to cart button listeners
+        const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const bookId = this.getAttribute('data-id');
+                const title = this.getAttribute('data-title');
+                const author = this.getAttribute('data-author');
+                const genre = this.getAttribute('data-genre');
+                const price = parseFloat(this.getAttribute('data-price'));
+                const img = this.getAttribute('data-img');
+
+                // Add book to cart
+                addToCart({
+                    id: bookId,
+                    title: title,
+                    author: author,
+                    genre: genre,
+                    price: price,
+                    img: img,
+                    quantity: 1
+                });
+
+                // Show notification
+                showNotification(`"${title}" added to your cart!`);
+            });
+        });
+    });
+
+    // Add item to cart
+    function addToCart(book) {
+        // Get current cart
+        const cart = JSON.parse(localStorage.getItem('bookCart'));
+
+        // Check if book already exists in cart
+        const existingBookIndex = cart.findIndex(item => item.id === book.id);
+
+        if (existingBookIndex >= 0) {
+            // Update quantity if book already exists
+            cart[existingBookIndex].quantity += 1;
+        } else {
+            // Add new book if it doesn't exist
+            cart.push(book);
+        }
+
+        // Save cart back to localStorage
+        localStorage.setItem('bookCart', JSON.stringify(cart));
+
+        // Update cart icon count
+        updateCartCount();
+    }
+
+    // Update cart count in navbar
+    function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem('bookCart'));
+        let totalItems = 0;
+
+        cart.forEach(item => {
+            totalItems += item.quantity;
+        });
+
+        // Find cart counter element and update it
+        const cartCounter = document.querySelector('.cart-counter');
+        if (cartCounter) {
+            cartCounter.textContent = totalItems;
+
+            // Only show if there are items
+            if (totalItems > 0) {
+                cartCounter.classList.remove('d-none');
+            } else {
+                cartCounter.classList.add('d-none');
+            }
+        }
+    }
+
+    // Show notification
+    function showNotification(message) {
+        const notification = document.getElementById('cartNotification');
+        const messageElement = document.getElementById('cartNotificationMessage');
+
+        // Set message
+        messageElement.textContent = message;
+
+        // Initialize toast
+        const toast = new bootstrap.Toast(notification, {
+            delay: 5000
+        });
+
+        // Show toast
+        toast.show();
+    }
+</script>
 </body>
 </html>

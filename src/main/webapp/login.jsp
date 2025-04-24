@@ -16,39 +16,35 @@
             background-color: white;
         }
 
-        .social-login .btn {
+        .user-type-selector {
+            margin-bottom: 20px;
+        }
+
+        .user-type-btn {
             width: 100%;
-            margin-bottom: 10px;
-            position: relative;
             text-align: center;
+            padding: 10px;
+            border: 2px solid #dee2e6;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
-        .social-login .btn i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
+        .user-type-btn.active {
+            border-color: #4a6fa5;
+            background-color: rgba(74, 111, 165, 0.1);
         }
 
-        .divider {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            margin: 20px 0;
+        .user-type-btn:first-child {
+            border-radius: 5px 0 0 5px;
         }
 
-        .divider::before, .divider::after {
-            content: "";
-            flex: 1;
-            border-bottom: 1px solid #dee2e6;
+        .user-type-btn:last-child {
+            border-radius: 0 5px 5px 0;
         }
 
-        .divider::before {
-            margin-right: 10px;
-        }
-
-        .divider::after {
-            margin-left: 10px;
+        input[type="radio"] {
+            display: none;
         }
     </style>
 </head>
@@ -58,39 +54,44 @@
 <div class="container py-5">
     <div class="login-container">
         <h2 class="text-center mb-4">Welcome Back</h2>
-        <p class="text-center text-muted mb-4">Sign in to access your account and continue your literary journey.</p>
+        <p class="text-center text-muted mb-4">Sign in to access your account</p>
 
-        <!-- Social Login -->
-        <div class="social-login mb-4">
-            <button class="btn btn-outline-primary">
-                <i class="fab fa-google"></i> Continue with Google
-            </button>
-            <button class="btn btn-outline-dark">
-                <i class="fab fa-facebook-f"></i> Continue with Facebook
-            </button>
-        </div>
-
-        <div class="divider">OR</div>
-
-        <!-- Email Login Form -->
+        <!-- Login Form -->
         <form action="login" method="POST">
+            <!-- User Type Selector -->
+            <div class="user-type-selector">
+                <div class="btn-group w-100" role="group">
+                    <label class="user-type-btn active">
+                        <input type="radio" name="userType" value="customer" checked> Regular User
+                    </label>
+                    <label class="user-type-btn">
+                        <input type="radio" name="userType" value="admin"> Administrator
+                    </label>
+                </div>
+            </div>
+
+            <!-- Email Field -->
             <div class="mb-3">
                 <label for="email" class="form-label">Email address</label>
                 <input type="email" class="form-control" id="email" name="email" required>
             </div>
+
+            <!-- Password Field -->
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control" id="password" name="password" required>
-                <div class="text-end mt-2">
-                    <a href="forgot-password.jsp" class="text-decoration-none">Forgot password?</a>
-                </div>
             </div>
+
+            <!-- Remember Me Checkbox -->
             <div class="mb-3 form-check">
                 <input type="checkbox" class="form-check-input" id="rememberMe" name="rememberMe">
                 <label class="form-check-label" for="rememberMe">Remember me</label>
             </div>
+
+            <!-- Submit Button -->
             <button type="submit" class="btn btn-primary w-100 mb-3">Sign In</button>
 
+            <!-- Registration Link -->
             <div class="text-center">
                 <p class="mb-0">Don't have an account? <a href="register.jsp" class="text-decoration-none">Sign up</a></p>
             </div>
@@ -99,5 +100,15 @@
 </div>
 
 <%@ include file="footer.jsp" %>
+
+<script>
+    // User type selection styling
+    document.querySelectorAll('.user-type-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.user-type-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+</script>
 </body>
 </html>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Shopping Cart | Book Haven</title>
+    <title>Your Shopping Cart | Book Master</title>
     <%@ include file="styles.jsp" %>
     <style>
         .cart-item {
@@ -32,6 +32,11 @@
             justify-content: center;
             flex-direction: column;
         }
+
+        .book-cover {
+            max-height: 120px;
+            object-fit: cover;
+        }
     </style>
 </head>
 <body>
@@ -42,71 +47,25 @@
         <div class="col-lg-8">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2>Your Shopping Cart</h2>
-                <span class="text-muted">3 items</span>
+                <span class="text-muted" id="cartItemCount">0 items</span>
             </div>
 
             <!-- Cart Items -->
-            <div class="card mb-4">
-                <div class="card-body">
-                    <div class="row align-items-center cart-item py-3 border-bottom">
-                        <div class="col-md-2">
-                            <img src="images/cart1.jpg" alt="Book Cover" class="img-fluid">
-                        </div>
-                        <div class="col-md-5">
-                            <h5 class="mb-1">The Silent Patient</h5>
-                            <p class="text-muted mb-1">Alex Michaelides</p>
-                            <span class="badge bg-primary">Thriller</span>
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" class="form-control quantity-input" value="1" min="1">
-                        </div>
-                        <div class="col-md-2 text-end">
-                            <h5 class="mb-0">$12.99</h5>
-                        </div>
-                        <div class="col-md-1 text-end">
-                            <button class="btn btn-link text-danger"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
+            <div class="card mb-4" id="cartItemsContainer">
+                <div class="card-body" id="cartItems">
+                    <!-- Cart items will be loaded dynamically -->
+                </div>
+            </div>
 
-                    <div class="row align-items-center cart-item py-3 border-bottom">
-                        <div class="col-md-2">
-                            <img src="images/cart2.jpg" alt="Book Cover" class="img-fluid">
-                        </div>
-                        <div class="col-md-5">
-                            <h5 class="mb-1">Educated</h5>
-                            <p class="text-muted mb-1">Tara Westover</p>
-                            <span class="badge bg-success">Memoir</span>
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" class="form-control quantity-input" value="1" min="1">
-                        </div>
-                        <div class="col-md-2 text-end">
-                            <h5 class="mb-0">$14.99</h5>
-                        </div>
-                        <div class="col-md-1 text-end">
-                            <button class="btn btn-link text-danger"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
-
-                    <div class="row align-items-center cart-item py-3">
-                        <div class="col-md-2">
-                            <img src="images/cart3.jpg" alt="Book Cover" class="img-fluid">
-                        </div>
-                        <div class="col-md-5">
-                            <h5 class="mb-1">Project Hail Mary</h5>
-                            <p class="text-muted mb-1">Andy Weir</p>
-                            <span class="badge bg-info">Sci-Fi</span>
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" class="form-control quantity-input" value="1" min="1">
-                        </div>
-                        <div class="col-md-2 text-end">
-                            <h5 class="mb-0">$15.99</h5>
-                        </div>
-                        <div class="col-md-1 text-end">
-                            <button class="btn btn-link text-danger"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
+            <!-- Empty Cart Message -->
+            <div class="card mb-4 d-none" id="emptyCartMessage">
+                <div class="card-body empty-cart">
+                    <i class="fas fa-shopping-cart fa-4x text-muted mb-4"></i>
+                    <h4 class="text-muted">Your cart is empty</h4>
+                    <p class="text-muted mb-4">Looks like you haven't added any books to your cart yet.</p>
+                    <a href="browse.jsp" class="btn btn-primary">
+                        <i class="fas fa-book-open me-2"></i> Browse Books
+                    </a>
                 </div>
             </div>
 
@@ -114,7 +73,7 @@
                 <a href="browse.jsp" class="btn btn-outline-primary">
                     <i class="fas fa-arrow-left"></i> Continue Shopping
                 </a>
-                <button class="btn btn-outline-danger">
+                <button class="btn btn-outline-danger" id="clearCartBtn">
                     <i class="fas fa-trash"></i> Clear Cart
                 </button>
             </div>
@@ -128,24 +87,24 @@
                 </div>
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-2">
-                        <span>Subtotal (3 items)</span>
-                        <span>$43.97</span>
+                        <span>Subtotal (<span id="summaryItemCount">0</span> items)</span>
+                        <span id="subtotalAmount">$0.00</span>
                     </div>
                     <div class="d-flex justify-content-between mb-2">
                         <span>Shipping</span>
                         <span class="text-success">FREE</span>
                     </div>
                     <div class="d-flex justify-content-between mb-2">
-                        <span>Tax</span>
-                        <span>$3.08</span>
+                        <span>Tax (7%)</span>
+                        <span id="taxAmount">$0.00</span>
                     </div>
                     <hr>
                     <div class="d-flex justify-content-between mb-3">
                         <h5>Total</h5>
-                        <h5>$47.05</h5>
+                        <h5 id="totalAmount">$0.00</h5>
                     </div>
                     <div class="d-grid">
-                        <a href="checkout.jsp" class="btn btn-primary btn-lg">Proceed to Checkout</a>
+                        <a href="checkout.jsp" class="btn btn-primary btn-lg" id="checkoutButton">Proceed to Checkout</a>
                     </div>
                     <div class="text-center mt-3">
                         <small class="text-muted">or</small>
@@ -156,123 +115,109 @@
                 </div>
             </div>
 
-            <!-- Promo Code -->
-            <div class="card mt-4">
-                <div class="card-body">
-                    <h5 class="card-title">Promo Code</h5>
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Enter promo code">
-                        <button class="btn btn-outline-secondary" type="button">Apply</button>
-                    </div>
-                    <div class="alert alert-success d-none" id="promoSuccess">
-                        Promo code applied successfully!
-                    </div>
-                    <div class="alert alert-danger d-none" id="promoError">
-                        Invalid promo code
-                    </div>
-                </div>
-            </div>
 
             <!-- Secure Checkout -->
-            <div class="text-center mt-4">
-                <p><i class="fas fa-lock me-2"></i>Secure Checkout</p>
-                <div class="d-flex justify-content-center">
-                    <img src="images/visa.png" alt="Visa" class="me-2" style="height: 30px;">
-                    <img src="images/mastercard.png" alt="Mastercard" class="me-2" style="height: 30px;">
-                    <img src="images/amex.png" alt="American Express" style="height: 30px;">
-                </div>
-            </div>
         </div>
     </div>
 </div>
 
-<!-- Recently Viewed -->
-<section class="bg-light py-5">
-    <div class="container">
-        <h3 class="mb-4">Recently Viewed</h3>
-        <div class="row">
-            <div class="col-md-3 col-6">
-                <div class="card book-card h-100">
-                    <img src="images/recent1.jpg" class="card-img-top" alt="Book Cover">
-                    <div class="card-body">
-                        <h6 class="card-title">The Midnight Library</h6>
-                        <p class="card-text text-muted small">Matt Haig</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="badge bg-info">Fantasy</span>
-                            <h6 class="text-primary mb-0">$13.99</h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-6">
-                <div class="card book-card h-100">
-                    <img src="images/recent2.jpg" class="card-img-top" alt="Book Cover">
-                    <div class="card-body">
-                        <h6 class="card-title">Where the Crawdads Sing</h6>
-                        <p class="card-text text-muted small">Delia Owens</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="badge bg-warning text-dark">Fiction</span>
-                            <h6 class="text-primary mb-0">$10.99</h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-6">
-                <div class="card book-card h-100">
-                    <img src="images/recent3.jpg" class="card-img-top" alt="Book Cover">
-                    <div class="card-body">
-                        <h6 class="card-title">Atomic Habits</h6>
-                        <p class="card-text text-muted small">James Clear</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="badge bg-secondary">Self-Help</span>
-                            <h6 class="text-primary mb-0">$11.99</h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-6">
-                <div class="card book-card h-100">
-                    <img src="images/recent4.jpg" class="card-img-top" alt="Book Cover">
-                    <div class="card-body">
-                        <h6 class="card-title">The Vanishing Half</h6>
-                        <p class="card-text text-muted small">Brit Bennett</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="badge bg-success">Literary</span>
-                            <h6 class="text-primary mb-0">$12.99</h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
 <%@ include file="footer.jsp" %>
 
 <script>
-    // Promo code functionality
-    document.querySelector('.btn-outline-secondary').addEventListener('click', function() {
-        const promoCode = document.querySelector('input[placeholder="Enter promo code"]').value;
-        if (promoCode.toLowerCase() === 'bookhaven10') {
-            document.getElementById('promoSuccess').classList.remove('d-none');
-            document.getElementById('promoError').classList.add('d-none');
+    document.addEventListener('DOMContentLoaded', function() {
+        // Load cart contents
+        loadCart();
 
-            // Here you would update the total with the discount
-            // For demonstration, we'll just show the success message
-        } else {
-            document.getElementById('promoError').classList.remove('d-none');
-            document.getElementById('promoSuccess').classList.add('d-none');
-        }
-    });
+        // Set up event listeners
+        document.getElementById('clearCartBtn').addEventListener('click', function() {
+            clearCart();
+        });
 
-    // Quantity change handlers
-    document.querySelectorAll('.quantity-input').forEach(input => {
-        input.addEventListener('change', function() {
-            // Here you would update the cart total when quantity changes
-            // For now, we'll just log the change
-            console.log(`Quantity changed to ${this.value}`);
+        document.getElementById('applyPromoBtn').addEventListener('click', function() {
+            applyPromoCode();
+        });
+
+        // Set up cart item event delegation
+        document.getElementById('cartItems').addEventListener('click', function(e) {
+            // Delete button click
+            if (e.target.classList.contains('fa-trash') || e.target.parentElement.classList.contains('fa-trash')) {
+                const button = e.target.closest('button');
+                const itemId = button.getAttribute('data-id');
+                removeFromCart(itemId);
+            }
+        });
+
+        // Set up quantity change event delegation
+        document.getElementById('cartItems').addEventListener('change', function(e) {
+            if (e.target.classList.contains('quantity-input')) {
+                const itemId = e.target.getAttribute('data-id');
+                const newQuantity = parseInt(e.target.value);
+                if (newQuantity < 1) {
+                    e.target.value = 1;
+                    updateCartItemQuantity(itemId, 1);
+                } else {
+                    updateCartItemQuantity(itemId, newQuantity);
+                }
+            }
         });
     });
-</script>
-</body>
-</html>
+
+    // Load cart from localStorage and display items
+    function loadCart() {
+        const cart = JSON.parse(localStorage.getItem('bookCart')) || [];
+        const cartItemsContainer = document.getElementById('cartItems');
+        const emptyCartMessage = document.getElementById('emptyCartMessage');
+        const cartItemsCard = document.getElementById('cartItemsContainer');
+
+        // Update cart item count
+        document.getElementById('cartItemCount').textContent = getTotalItems(cart) + ' items';
+
+        if (cart.length === 0) {
+            // Show empty cart message
+            emptyCartMessage.classList.remove('d-none');
+            cartItemsCard.classList.add('d-none');
+            document.getElementById('clearCartBtn').disabled = true;
+            document.getElementById('checkoutButton').disabled = true;
+        } else {
+            // Hide empty cart message and show items
+            emptyCartMessage.classList.add('d-none');
+            cartItemsCard.classList.remove('d-none');
+            document.getElementById('clearCartBtn').disabled = false;
+            document.getElementById('checkoutButton').disabled = false;
+
+            // Generate HTML for cart items
+            let cartHTML = '';
+            cart.forEach(item => {
+                cartHTML += `
+                <div class="row align-items-center cart-item py-3 border-bottom" id="item-${item.id}">
+                    <div class="col-md-2">
+                        <img src="${item.img}" alt="${item.title}" class="img-fluid book-cover">
+                    </div>
+                    <div class="col-md-5">
+                        <h5 class="mb-1">${item.title}</h5>
+                        <p class="text-muted mb-1">${item.author}</p>
+                        <span class="badge bg-${getBadgeColor(item.genre)}">${item.genre}</span>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" class="form-control quantity-input" value="${item.quantity}" min="1" data-id="${item.id}">
+                    </div>
+                    <div class="col-md-2 text-end">
+                        <h5 class="mb-0">$${(item.price * item.quantity).toFixed(2)}</h5>
+                    </div>
+                    <div class="col-md-1 text-end">
+                        <button class="btn btn-link text-danger" data-id="${item.id}"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+                `;
+            });
+
+            cartItemsContainer.innerHTML = cartHTML;
+        }
+
+        // Update summary
+        updateSummary(cart);
+    }
+
+    // Update cart summary calculations
+    function updateSummary(cart) {

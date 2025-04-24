@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout | Book Haven</title>
+    <title>Checkout | Book Master</title>
     <%@ include file="styles.jsp" %>
     <style>
         .checkout-step {
@@ -382,17 +382,7 @@
                 </div>
             </div>
 
-            <!-- Secure Checkout -->
-            <div class="card mt-4">
-                <div class="card-body text-center">
-                    <p><i class="fas fa-lock me-2"></i>Secure Checkout</p>
-                    <div class="d-flex justify-content-center">
-                        <img src="images/visa.png" alt="Visa" class="me-2" style="height: 30px;">
-                        <img src="images/mastercard.png" alt="Mastercard" class="me-2" style="height: 30px;">
-                        <img src="images/amex.png" alt="American Express" style="height: 30px;">
-                    </div>
-                </div>
-            </div>
+
 
             <!-- Need Help? -->
             <div class="card mt-4">
@@ -400,7 +390,7 @@
                     <h5 class="card-title">Need Help?</h5>
                     <p class="card-text">Our customer service team is available 24/7 to assist you with your order.</p>
                     <p class="card-text"><i class="fas fa-phone me-2"></i>(800) 123-4567</p>
-                    <p class="card-text"><i class="fas fa-envelope me-2"></i>support@bookhaven.com</p>
+                    <p class="card-text"><i class="fas fa-envelope me-2"></i>support@bookMaster.com</p>
                 </div>
             </div>
         </div>

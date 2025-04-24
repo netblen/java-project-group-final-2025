@@ -263,7 +263,7 @@
         </div>
         <div class="col-md-3 col-6">
             <div class="card book-card h-100">
-                <img src="images/2.png" class="card-img-top" alt="Book Cover">
+                <img src="brit.png" class="card-img-top" alt="Book Cover">
                 <div class="card-body">
                     <h6 class="card-title">The Vanishing Half</h6>
                     <p class="card-text text-muted small">Brit Bennett</p>
