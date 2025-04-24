@@ -340,7 +340,7 @@
                 <div class="form-check mb-4">
                     <input class="form-check-input" type="checkbox" id="termsAgree" required>
                     <label class="form-check-label" for="termsAgree">
-                        I agree to the <a href="terms.jsp">Terms and Conditions</a> and <a href="privacy.jsp">Privacy Policy</a>
+                        I agree to the <a href="">Terms and Conditions</a> and <a href="">Privacy Policy</a>
                     </label>
                 </div>
 
