@@ -358,6 +358,55 @@
         // Show toast
         toast.show();
     }
+
+//  Fetch real books from db
+    fetch('/books')
+      .then(response => response.json())
+      .then(books => {
+        const bookList = document.getElementById('book-list');
+        books.forEach(book => {
+          const bookDiv = document.createElement('div');
+          bookDiv.innerHTML = `
+            <h3>${book.title}</h3>
+            <p>Author: ${book.author}</p>
+            <p>Price: $${book.price}</p>
+            <button onclick="addToCart(${book.id})">Add to Cart</button>
+            <hr/>
+          `;
+          bookList.appendChild(bookDiv);
+        });
+      })
+      .catch(error => console.error('Error fetching books:', error));
+
+    // Function to add selected book to cart
+    function addToCart(bookId) {
+        const customerId = 1;  
+        const quantity = 1;   
+
+        fetch('/cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                customerId: customerId,
+                bookId: bookId,
+                quantity: quantity
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Book added to cart successfully!');
+            } else {
+                response.json().then(data => {
+                    alert('Error: ' + (data.error || 'Unknown error'));
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error adding to cart:', error);
+        });
+    }
 </script>
 </body>
 </html>
