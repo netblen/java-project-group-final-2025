@@ -4,7 +4,7 @@ INSERT INTO Genre (genreName) VALUES ('Fiction'), ('Non-Fiction'), ('Science'), 
 -- BOOKS
 INSERT INTO Books (title, author, bookPrice, stock, isAvailable)
 VALUES
-    ('1984', 'George Orwell', 15.99, 10, TRUE),
+    ('Educated', 'Tara westover', 14.99, 10, TRUE),
     ('A Brief History of Time', 'Stephen Hawking', 20.00, 5, TRUE),
     ('The Hobbit', 'J.R.R. Tolkien', 12.50, 8, TRUE),
     ('The Art of War', 'Sun Tzu', 8.99, 15, TRUE);

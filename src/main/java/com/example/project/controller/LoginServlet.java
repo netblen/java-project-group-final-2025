@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
     private CustomerDaoimpl customerDao;
@@ -36,18 +35,28 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
+        String userType = req.getParameter("userType"); // Get the user type from form
 
-        System.out.println("🔑 Login attempt: " + email);
+        System.out.println("🔑 Login attempt: " + email + " | Type: " + userType);
 
         Customer customer = customerDao.getByEmail(email);
 
         if (customer != null && customer.getPassword().equals(password)) {
             req.getSession().setAttribute("currentUser", customer);
-            resp.sendRedirect("index.jsp");
+
+            // Check if user is admin and the selected userType matches
+            if ("admin".equals(userType) && customer.isAdmin()) {
+                resp.sendRedirect("admin-dashboard.jsp"); // Redirect to admin dashboard
+            } else if ("customer".equals(userType)) {
+                resp.sendRedirect("index.jsp"); // Regular user goes to index
+            } else {
+                // User type mismatch (admin trying to log in as customer or vice versa)
+                resp.setContentType("text/html");
+                resp.getWriter().write("<p style='color:red;'>Invalid login type for this account</p>");
+            }
         } else {
             resp.setContentType("text/html");
             resp.getWriter().write("<p style='color:red;'>Invalid email or password</p>");
-
         }
     }
 }
