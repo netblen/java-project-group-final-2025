@@ -24,7 +24,7 @@ public class OrderDetail {
     public void setOrderQuantity(int orderQuantity) { this.orderQuantity = orderQuantity; }
     public void setOrderPrice(double orderPrice) { this.orderPrice = orderPrice; }
 
-    // 👉 getters/setters nuevos
+    // getters/setters
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
 

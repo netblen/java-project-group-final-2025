@@ -223,4 +223,77 @@ public class BookDaoimpl implements BookDAO {
             e.printStackTrace();
         }
     }
+
+    public List<Book> filterAndSortBooks(List<String> genres, double maxPrice, boolean onlyInStock, String sortBy) {
+        List<Book> filteredBooks = new ArrayList<>();
+        String baseQuery = "SELECT DISTINCT b.* FROM Books b " +
+                "LEFT JOIN Book_Genres bg ON b.bookId = bg.bookId " +
+                "LEFT JOIN Genre g ON g.genreId = bg.genreId WHERE 1=1";
+
+        if (genres != null && !genres.isEmpty()) {
+            String genrePlaceholders = String.join(",", genres.stream().map(g -> "?").toList());
+            baseQuery += " AND g.genreName IN (" + genrePlaceholders + ")";
+        }
+        if (onlyInStock) {
+            baseQuery += " AND b.stock > 0";
+        }
+        baseQuery += " AND b.bookPrice <= ?";
+
+        // Sorting
+        switch (sortBy) {
+            case "priceAsc" -> baseQuery += " ORDER BY b.bookPrice ASC";
+            case "priceDesc" -> baseQuery += " ORDER BY b.bookPrice DESC";
+            case "newest" -> baseQuery += " ORDER BY b.bookId DESC"; // Assuming higher IDs are newer
+            case "bestsellers" -> baseQuery += " ORDER BY b.stock DESC"; // Fallback for now
+            default -> baseQuery += " ORDER BY b.bookId ASC"; // Default sort
+        }
+
+        try (PreparedStatement stmt = conn.prepareStatement(baseQuery)) {
+            int index = 1;
+            if (genres != null && !genres.isEmpty()) {
+                for (String genre : genres) {
+                    stmt.setString(index++, genre);
+                }
+            }
+            stmt.setDouble(index, maxPrice);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int bookId = rs.getInt("bookId");
+
+                    // Fetch genres for this book
+                    List<String> bookGenres = new ArrayList<>();
+                    String genreSql = """
+                    SELECT g.genreName FROM Genre g
+                    JOIN Book_Genres bg ON g.genreId = bg.genreId
+                    WHERE bg.bookId = ?
+                    """;
+                    try (PreparedStatement genreStmt = conn.prepareStatement(genreSql)) {
+                        genreStmt.setInt(1, bookId);
+                        try (ResultSet grs = genreStmt.executeQuery()) {
+                            while (grs.next()) {
+                                bookGenres.add(grs.getString("genreName"));
+                            }
+                        }
+                    }
+
+                    Book book = new Book(
+                            bookId,
+                            rs.getString("title"),
+                            rs.getString("author"),
+                            rs.getDouble("bookPrice"),
+                            rs.getInt("stock"),
+                            rs.getBoolean("isAvailable"),
+                            bookGenres
+                    );
+                    filteredBooks.add(book);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error filtering and sorting books: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return filteredBooks;
+    }
 }

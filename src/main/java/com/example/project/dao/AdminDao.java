@@ -1,39 +1,21 @@
 package com.example.project.dao;
 
 import com.example.project.model.Admin;
-
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.List;
 
-public class AdminDao {
-    private final Connection conn;
+public interface AdminDao {
+    /**
+     * Logs an administrative action to the database.
+     * @param actionType The action type performed by the admin.
+     * @throws SQLException if a database access error occurs.
+     */
+    void logAction(String actionType) throws SQLException;
 
-    public AdminDao(Connection conn) {
-        this.conn = conn;
-    }
-
-    public void logAction(String actionType) throws SQLException {
-        String sql = "INSERT INTO Admin (actionType) VALUES (?)";
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setString(1, actionType);
-        stmt.executeUpdate();
-        stmt.close();
-    }
-
-    public List<Admin> getAllLogs() throws SQLException {
-        List<Admin> logs = new ArrayList<>();
-        String sql = "SELECT * FROM Admin ORDER BY actionDate DESC";
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery(sql);
-        while (rs.next()) {
-            logs.add(new Admin(
-                    rs.getInt("adminId"),
-                    rs.getString("actionType"),
-                    rs.getTimestamp("actionDate")
-            ));
-        }
-        stmt.close();
-        return logs;
-    }
+    /**
+     * Retrieves all logged admin actions, ordered by most recent.
+     * @return A list of admin logs.
+     * @throws SQLException if a database access error occurs.
+     */
+    List<Admin> getAllLogs() throws SQLException;
 }
