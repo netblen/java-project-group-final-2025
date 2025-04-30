@@ -359,6 +359,7 @@
         toast.show();
     }
 
+/*
 //  Fetch real books from db
     fetch('/books')
       .then(response => response.json())
@@ -406,7 +407,7 @@
         .catch(error => {
             console.error('Error adding to cart:', error);
         });
-    }
+    }  */
 </script>
 </body>
 </html>
