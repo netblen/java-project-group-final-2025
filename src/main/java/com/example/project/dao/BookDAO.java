@@ -29,4 +29,15 @@ public interface BookDAO {
      * @return true if successful
      */
     boolean delete(String code);
+
+    /**
+     * NEW: Filter and sort books based on search criteria
+     * @param genres list of genre names
+     * @param maxPrice maximum price
+     * @param onlyInStock true if only showing in stock
+     * @param sortBy sorting option (e.g., priceAsc, priceDesc, newest, etc)
+     * @return list of books matching criteria
+     */
+    List<Book> filterAndSortBooks(List<String> genres, double maxPrice, boolean onlyInStock, String sortBy);
 }
+
