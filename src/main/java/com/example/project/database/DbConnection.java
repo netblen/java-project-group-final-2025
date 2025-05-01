@@ -2,6 +2,7 @@ package com.example.project.database;
 
 import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Scanner;
 
@@ -11,10 +12,17 @@ public class DbConnection {
         System.out.println("✅ Schema initialized.");
     }
 
-    // Run data.sql only if needed
     public static void loadTestData(Connection conn) throws Exception {
-        runScript(conn, "data.sql");
-        System.out.println("✅ Sample data loaded.");
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM Customer")) {
+            rs.next();
+            if (rs.getInt(1) == 0) {
+                runScript(conn, "data.sql");
+                System.out.println("✅ Sample data loaded.");
+            } else {
+                System.out.println("ℹ️ Skipped loading test data.");
+            }
+        }
     }
 
     private static void runScript(Connection conn, String fileName) throws Exception {

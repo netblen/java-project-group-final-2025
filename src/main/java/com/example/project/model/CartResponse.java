@@ -3,8 +3,8 @@ package com.example.project.model;
 import java.util.List;
 
 public class CartResponse {
-    private List<CartItemDetails> items;
-    private double total;
+    private final List<CartItemDetails> items;
+    private final double total;
 
     public CartResponse(List<CartItemDetails> items) {
         this.items = items;

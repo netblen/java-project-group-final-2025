@@ -387,7 +387,7 @@
                     </a>
                 </li>
                 <li class="nav-item mt-4">
-                    <a class="nav-link" href="logout" method="POST">
+                    <a class="nav-link" href="index.jsp" method="POST">
                         <i class="fas fa-sign-out-alt"></i> Logout
                     </a>
                 </li>

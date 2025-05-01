@@ -3,6 +3,7 @@ package com.example.project.controller;
 import com.example.project.dao.impl.CartItemDaoimpl;
 import com.example.project.dao.impl.ShoppingCartDaoimpl;
 import com.example.project.database.DbConnection;
+import com.example.project.database.DbUtil;
 import com.example.project.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -25,19 +26,14 @@ public class ShoppingCartServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         try {
-            Class.forName("org.h2.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:h2:file:./bookstore", "sa", "");
-
-            DbConnection.initializeSchema(conn);
-
+            Connection conn = DbUtil.getConnection();
             cartDao = new ShoppingCartDaoimpl(conn);
             cartItemDao = new CartItemDaoimpl(conn);
-            objectMapper = new ObjectMapper();
-
         } catch (Exception e) {
-            throw new ServletException("❌ Error initializing ShoppingCartServlet", e);
+            throw new ServletException("❌ Error initializing CustomerServlet", e);
         }
     }
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -214,13 +210,13 @@ public class ShoppingCartServlet extends HttpServlet {
     }
 
     static class ErrorResponse {
-        private String error;
+        private final String error;
         public ErrorResponse(String error) { this.error = error; }
         public String getError() { return error; }
     }
 
     static class SuccessResponse {
-        private String message;
+        private final String message;
         public SuccessResponse(String message) { this.message = message; }
         public String getMessage() { return message; }
     }

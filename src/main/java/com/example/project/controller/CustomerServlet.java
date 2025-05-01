@@ -1,7 +1,7 @@
 package com.example.project.controller;
 
 import com.example.project.dao.impl.CustomerDaoimpl;
-import com.example.project.database.DbConnection;
+import com.example.project.database.DbUtil;
 import com.example.project.model.Customer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.List;
 
 @WebServlet("/customers")
@@ -23,14 +22,7 @@ public class CustomerServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         try {
-            Class.forName("org.h2.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:h2:file:./bookstore", "sa", "");
-
-            System.out.println("📦 Connected DB URL: " + conn.getMetaData().getURL());
-
-            DbConnection.initializeSchema(conn); // optional for customers
-            conn.setAutoCommit(true);
-
+            Connection conn = DbUtil.getConnection();
             customerDao = new CustomerDaoimpl(conn);
             objectMapper = new ObjectMapper();
         } catch (Exception e) {
@@ -38,32 +30,6 @@ public class CustomerServlet extends HttpServlet {
         }
     }
 
-    // GET all customers
-    //@Override
-    //protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-//        String idParam = req.getParameter("id");
-//        resp.setContentType("application/json");
-//
-//        try {
-//            if (idParam != null) {
-//                int id = Integer.parseInt(idParam);
-//                Customer customer = customerDao.getById(id);
-//                if (customer != null) {
-//                    objectMapper.writeValue(resp.getWriter(), customer);
-//                } else {
-//                    resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-//                    resp.getWriter().write("{\"error\":\"Customer not found\"}");
-//                }
-//            } else {
-//                List<Customer> customers = customerDao.listAll();
-//                objectMapper.writeValue(resp.getWriter(), customers);
-//            }
-//        } catch (Exception e) {
-//            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-//            resp.getWriter().write("⚠️ Error: " + e.getMessage());
-//        }
-//    }
-// GET all customers or customer by ID or Email
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String idParam = req.getParameter("id");
@@ -80,7 +46,7 @@ public class CustomerServlet extends HttpServlet {
                     resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
                     resp.getWriter().write("{\"error\":\"Customer not found by ID\"}");
                 }
-            } else if (emailParam != null) {  //
+            } else if (emailParam != null) {
                 Customer customer = customerDao.getByEmail(emailParam);
                 if (customer != null) {
                     objectMapper.writeValue(resp.getWriter(), customer);
@@ -123,8 +89,7 @@ public class CustomerServlet extends HttpServlet {
             System.out.println("📤 INSERT success: " + success);
 
             if (success) {
-                resp.setStatus(HttpServletResponse.SC_CREATED);
-                resp.getWriter().write("✅ Customer created successfully.");
+                resp.sendRedirect("index.jsp");
             } else {
                 resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 resp.getWriter().write("❌ Failed to add customer.");

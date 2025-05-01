@@ -3,12 +3,14 @@ package com.example.project.controller;
 import com.example.project.dao.impl.CartItemDaoimpl;
 import com.example.project.dao.impl.ShoppingCartDaoimpl;
 import com.example.project.database.DbConnection;
+import com.example.project.database.DbUtil;
 import com.example.project.model.ShoppingCart;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
+import javax.servlet.ServletContext;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,9 +25,7 @@ public class CartItemServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         try {
-            Class.forName("org.h2.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:h2:file:./bookstore", "sa", "");
-            DbConnection.initializeSchema(conn);
+            Connection conn = DbUtil.getConnection();
             cartDao = new ShoppingCartDaoimpl(conn);
             cartItemDao = new CartItemDaoimpl(conn);
             objectMapper = new ObjectMapper();

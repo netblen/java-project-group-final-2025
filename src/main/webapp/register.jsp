@@ -57,7 +57,7 @@
 
     <!-- Registration Form (will submit to RegisterServlet) -->
     <form action="customers" method="POST" id="registrationForm" onsubmit="return validateAndSubmit(event)">
-      <div class="row mb-3">
+    <div class="row mb-3">
         <div class="col-md-6 mb-3 mb-md-0">
           <label for="firstName" class="form-label">First Name*</label>
           <input type="text" class="form-control" id="firstName" name="firstName" required>
@@ -168,43 +168,63 @@
   }
 
   // Form validation and submission handling
+  // function validateAndSubmit(event) {
+  //   const password = document.getElementById('password').value;
+  //   const confirmPassword = document.getElementById('confirmPassword').value;
+  //
+  //   if (password !== confirmPassword) {
+  //     alert('Passwords do not match!');
+  //     return false;
+  //   }
+  //
+  //   if (password.length < 8) {
+  //     alert('Password must be at least 8 characters!');
+  //     return false;
+  //   }
+  //
+  //   // For normal form submission without AJAX, we would show the modal after page reload
+  //   // using a session attribute or request parameter set by the server
+  //
+  //   // This is a simplistic approach for demonstration purposes
+  //   // In production, you'd validate on the server and only show this on success
+  //
+  //   // Prevent the default form submission
+  //   event.preventDefault();
+  //
+  //   // Simulate form submission (in real app, submit via AJAX or redirect after server processing)
+  //   setTimeout(() => {
+  //     // Show the modal after "submission"
+  //     const thankYouModal = new bootstrap.Modal(document.getElementById('thankYouModal'));
+  //     thankYouModal.show();
+  //
+  //     // In a real implementation with AJAX:
+  //     // Submit the form data to the server
+  //     // On success response, show the modal
+  //     // On error, show appropriate message
+  //   }, 500);
+  //
+  //   return false; // Prevent default form submission
+  // }
+
   function validateAndSubmit(event) {
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
 
     if (password !== confirmPassword) {
       alert('Passwords do not match!');
+      event.preventDefault();
       return false;
     }
 
     if (password.length < 8) {
       alert('Password must be at least 8 characters!');
+      event.preventDefault();
       return false;
     }
 
-    // For normal form submission without AJAX, we would show the modal after page reload
-    // using a session attribute or request parameter set by the server
-
-    // This is a simplistic approach for demonstration purposes
-    // In production, you'd validate on the server and only show this on success
-
-    // Prevent the default form submission
-    event.preventDefault();
-
-    // Simulate form submission (in real app, submit via AJAX or redirect after server processing)
-    setTimeout(() => {
-      // Show the modal after "submission"
-      const thankYouModal = new bootstrap.Modal(document.getElementById('thankYouModal'));
-      thankYouModal.show();
-
-      // In a real implementation with AJAX:
-      // Submit the form data to the server
-      // On success response, show the modal
-      // On error, show appropriate message
-    }, 500);
-
-    return false; // Prevent default form submission
+    return true;
   }
+
 
   // In a real implementation with normal form submission and server processing:
   // Check if there's a success parameter in the URL when page loads

@@ -7,5 +7,8 @@
 /dataSources/
 /dataSources.local.xml
 
+/data/bookstore.mv.db
+/data/bookstore.trace.db
+
 *.mv.db
 *.trace.db

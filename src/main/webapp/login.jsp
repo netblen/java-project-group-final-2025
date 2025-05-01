@@ -58,17 +58,6 @@
 
         <!-- Login Form -->
         <form action="login" method="POST">
-            <!-- User Type Selector -->
-            <div class="user-type-selector">
-                <div class="btn-group w-100" role="group">
-                    <label class="user-type-btn active">
-                        <input type="radio" name="userType" value="customer" checked> Regular User
-                    </label>
-                    <label class="user-type-btn">
-                        <input type="radio" name="userType" value="admin"> Administrator
-                    </label>
-                </div>
-            </div>
 
             <!-- Email Field -->
             <div class="mb-3">

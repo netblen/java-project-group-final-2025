@@ -2,6 +2,7 @@ package com.example.project.controller;
 
 import com.example.project.dao.impl.OrderDaoimpl;
 import com.example.project.database.DbConnection;
+import com.example.project.database.DbUtil;
 import com.example.project.model.Order;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -22,15 +23,14 @@ public class OrderServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         try {
-            Class.forName("org.h2.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:h2:file:./bookstore", "sa", "");
-            DbConnection.initializeSchema(conn);
+            Connection conn = DbUtil.getConnection();
             orderDao = new OrderDaoimpl(conn);
             objectMapper = new ObjectMapper();
         } catch (Exception e) {
-            throw new ServletException("❌ Error initializing OrderServlet", e);
+            throw new ServletException("❌ Error initializing CustomerServlet", e);
         }
     }
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -58,7 +58,7 @@ public class OrderServlet extends HttpServlet {
     }
 
     static class ErrorResponse {
-        private String error;
+        private final String error;
         public ErrorResponse(String error) { this.error = error; }
         public String getError() { return error; }
     }

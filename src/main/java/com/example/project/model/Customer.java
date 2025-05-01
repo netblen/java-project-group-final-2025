@@ -7,25 +7,20 @@ public class Customer {
     private String password;
     private String userType;
 
-    // Constructor
     public Customer(int customerId, String name, String email, String password, String userType) {
         this.customerId = customerId;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.userType = userType;
+        this.userType = userType != null ? userType.toLowerCase() : "customer";
     }
 
     public Customer(int customerId, String name, String email, String password) {
-        this.customerId = customerId;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.userType = "customer"; // Default to regular customer
+        this(customerId, name, email, password, "customer");
     }
 
     public Customer() {
-        this.userType = "customer"; // Default to regular customer
+        this.userType = "customer";
     }
 
     // Getters
@@ -35,7 +30,6 @@ public class Customer {
     public String getPassword() { return password; }
     public String getUserType() { return userType; }
 
-    // Convenience method for checking admin status
     public boolean isAdmin() {
         return "admin".equalsIgnoreCase(this.userType);
     }

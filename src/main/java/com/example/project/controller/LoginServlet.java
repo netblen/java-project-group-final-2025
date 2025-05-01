@@ -1,6 +1,7 @@
 package com.example.project.controller;
 
 import com.example.project.dao.impl.CustomerDaoimpl;
+import com.example.project.database.DbUtil;
 import com.example.project.model.Customer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -17,46 +18,38 @@ import java.sql.DriverManager;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
     private CustomerDaoimpl customerDao;
-    private ObjectMapper objectMapper;
 
     @Override
     public void init() throws ServletException {
         try {
-            Class.forName("org.h2.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:h2:file:./bookstore", "sa", "");
+            Connection conn = DbUtil.getConnection();
             customerDao = new CustomerDaoimpl(conn);
-            objectMapper = new ObjectMapper();
         } catch (Exception e) {
-            throw new ServletException("Error initializing LoginServlet", e);
+            throw new ServletException("❌ Error initializing CustomerServlet", e);
         }
     }
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
-        String userType = req.getParameter("userType"); // Get the user type from form
-
-        System.out.println("🔑 Login attempt: " + email + " | Type: " + userType);
 
         Customer customer = customerDao.getByEmail(email);
 
         if (customer != null && customer.getPassword().equals(password)) {
+            String storedType = customer.getUserType(); // "regular" o "admin"
+
             req.getSession().setAttribute("currentUser", customer);
 
-            // Check if user is admin and the selected userType matches
-            if ("admin".equals(userType) && customer.isAdmin()) {
-                resp.sendRedirect("admin-dashboard.jsp"); // Redirect to admin dashboard
-            } else if ("customer".equals(userType)) {
-                resp.sendRedirect("index.jsp"); // Regular user goes to index
+            if ("admin".equalsIgnoreCase(storedType)) {
+                resp.sendRedirect("admin-dashboard.jsp");
             } else {
-                // User type mismatch (admin trying to log in as customer or vice versa)
-                resp.setContentType("text/html");
-                resp.getWriter().write("<p style='color:red;'>Invalid login type for this account</p>");
+                resp.sendRedirect("index.jsp");
             }
         } else {
             resp.setContentType("text/html");
-            resp.getWriter().write("<p style='color:red;'>Invalid email or password</p>");
+            resp.getWriter().write("<p style='color:red;'>❌ Invalid email or password</p>");
         }
     }
 }

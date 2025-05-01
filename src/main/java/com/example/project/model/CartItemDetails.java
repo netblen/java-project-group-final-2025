@@ -5,7 +5,7 @@ public class CartItemDetails {
     private String title;
     private String author;
     private int quantity;
-    private double price;
+    private final double price;
 
     public CartItemDetails(int bookId, String title, String author, int quantity, double price) {
         this.bookId = bookId;
