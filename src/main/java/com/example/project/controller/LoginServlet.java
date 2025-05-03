@@ -1,9 +1,8 @@
 package com.example.project.controller;
 
 import com.example.project.dao.impl.CustomerDaoimpl;
-import com.example.project.database.DbUtil;
+import com.example.project.db.DbUtil;
 import com.example.project.model.Customer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

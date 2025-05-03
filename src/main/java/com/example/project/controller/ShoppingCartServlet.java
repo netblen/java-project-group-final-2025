@@ -2,8 +2,7 @@ package com.example.project.controller;
 
 import com.example.project.dao.impl.CartItemDaoimpl;
 import com.example.project.dao.impl.ShoppingCartDaoimpl;
-import com.example.project.database.DbConnection;
-import com.example.project.database.DbUtil;
+import com.example.project.db.DbUtil;
 import com.example.project.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -12,8 +11,6 @@ import jakarta.servlet.http.*;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.time.LocalDate;
 import java.util.List;
 
 @WebServlet("/cart")

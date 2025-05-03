@@ -2,9 +2,7 @@ package com.example.project.controller;
 
 import com.example.project.dao.BookDAO;
 import com.example.project.dao.impl.BookDaoimpl;
-import com.example.project.dao.impl.CustomerDaoimpl;
-import com.example.project.database.DbConnection;
-import com.example.project.database.DbUtil;
+import com.example.project.db.DbUtil;
 import com.example.project.model.Book;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;

@@ -2,7 +2,7 @@ package com.example.project.controller;
 
 import com.example.project.dao.InventoryDao;
 import com.example.project.dao.impl.InventoryDaoimpl;
-import com.example.project.database.DbUtil;
+import com.example.project.db.DbUtil;
 import com.example.project.model.Inventory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;

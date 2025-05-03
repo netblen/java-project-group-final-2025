@@ -2,7 +2,7 @@ package com.example.project.controller;
 
 import com.example.project.dao.AdminDao;
 import com.example.project.dao.impl.AdminDaoimpl;
-import com.example.project.database.DbUtil;
+import com.example.project.db.DbUtil;
 import com.example.project.model.Admin;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;

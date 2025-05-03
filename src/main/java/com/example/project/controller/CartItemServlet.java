@@ -2,18 +2,15 @@ package com.example.project.controller;
 
 import com.example.project.dao.impl.CartItemDaoimpl;
 import com.example.project.dao.impl.ShoppingCartDaoimpl;
-import com.example.project.database.DbConnection;
-import com.example.project.database.DbUtil;
+import com.example.project.db.DbUtil;
 import com.example.project.model.ShoppingCart;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
-import javax.servlet.ServletContext;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 
 @WebServlet("/cart/item")
 public class CartItemServlet extends HttpServlet {
