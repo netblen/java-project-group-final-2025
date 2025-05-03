@@ -67,24 +67,17 @@ public class BookServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        String title = req.getParameter("title");
-        String author = req.getParameter("author");
-        double price = Double.parseDouble(req.getParameter("price"));
-        int stock = Integer.parseInt(req.getParameter("stock"));
-//        String genreId = req.getParameter("genre");
-        boolean isAvailable = req.getParameter("isAvailable") != null;
-
-        Book book = new Book();
-        book.setTitle(title);
-        book.setAuthor(author);
-        book.setBookPrice(price);
-        book.setStock(stock);
-        book.setAvailable(isAvailable);
-        //book.setGenres(List.of(genreId));
-
-        bookDao.save(book);
-        resp.sendRedirect("books.jsp");
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try {
+            Book book = objectMapper.readValue(req.getReader(), Book.class);
+            bookDao.save(book);
+            resp.setStatus(HttpServletResponse.SC_CREATED);
+            objectMapper.writeValue(resp.getWriter(), book);
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            objectMapper.writeValue(resp.getWriter(), "Error saving book: " + e.getMessage());
+        }
     }
 
     @Override

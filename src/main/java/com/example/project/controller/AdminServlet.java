@@ -1,65 +1,66 @@
 package com.example.project.controller;
 
-import com.example.project.dao.AdminDao;
-import com.example.project.dao.impl.AdminDaoimpl;
+import com.example.project.dao.*;
+import com.example.project.dao.impl.*;
 import com.example.project.db.DbUtil;
-import com.example.project.model.Admin;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.project.model.*;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-@WebServlet("/admin")
+@WebServlet("/adminDashboard")
 public class AdminServlet extends HttpServlet {
+    private BookDAO bookDao;
+    private CustomerDAO customerDao;
     private AdminDao adminDao;
-    private ObjectMapper objectMapper;
 
     @Override
     public void init() throws ServletException {
         try {
             Connection conn = DbUtil.getConnection();
+            bookDao = new BookDaoimpl(conn);
+            customerDao = new CustomerDaoimpl(conn);
             adminDao = new AdminDaoimpl(conn);
-            objectMapper = new ObjectMapper();
         } catch (Exception e) {
             throw new ServletException("❌ Failed to initialize AdminServlet", e);
         }
     }
 
-    // GET: Return all admin logs as JSON
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setContentType("application/json");
-
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            List<Admin> logs = adminDao.getAllLogs();
-            objectMapper.writeValue(resp.getWriter(), logs);
+            List<Book> books = bookDao.listAll();
+            List<Customer> users = customerDao.listAll();
+
+            int totalBooks = books.size();
+            int inStock = (int) books.stream().filter(b -> b.getStock() > 5).count();
+            int lowStock = (int) books.stream().filter(b -> b.getStock() > 0 && b.getStock() <= 5).count();
+            int outOfStock = (int) books.stream().filter(b -> b.getStock() == 0).count();
+
+            Map<String, Integer> inventoryStats = new HashMap<>();
+            inventoryStats.put("totalBooks", totalBooks);
+            inventoryStats.put("inStock", inStock);
+            inventoryStats.put("lowStock", lowStock);
+            inventoryStats.put("outOfStock", outOfStock);
+
+            req.setAttribute("books", books);
+            req.setAttribute("users", users);
+            req.setAttribute("inventoryStats", inventoryStats);
+            //req.setAttribute("recentOrders", recentOrders);
+
+            Customer currentUser = (Customer) req.getSession().getAttribute("currentUser");
+            req.setAttribute("currentUser", currentUser);
+
+            req.getRequestDispatcher("adminDashboard.jsp").forward(req, resp);
         } catch (Exception e) {
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            objectMapper.writeValue(resp.getWriter(), "❌ Error retrieving admin logs: " + e.getMessage());
-        }
-    }
-
-    // POST: Log a new admin action
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        try {
-            String actionType = req.getParameter("actionType");
-
-            if (actionType == null || actionType.trim().isEmpty()) {
-                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                resp.getWriter().write("⚠️ 'actionType' is required.");
-                return;
-            }
-
-            adminDao.logAction(actionType);
-            resp.setStatus(HttpServletResponse.SC_CREATED);
-        } catch (Exception e) {
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            resp.getWriter().write("❌ Error logging admin action: " + e.getMessage());
+            throw new ServletException("❌ Error loading dashboard data", e);
         }
     }
 }

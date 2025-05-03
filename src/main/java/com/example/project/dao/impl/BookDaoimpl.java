@@ -106,7 +106,7 @@ public class BookDaoimpl implements BookDAO {
     @Override
     public boolean save(Book book) {
         if (findByCode(String.valueOf(book.getBookId())) != null) {
-            updatePrice(book.getBookId(), book.getBookPrice());
+            update(book);
             return true;
         } else {
             add(book);
