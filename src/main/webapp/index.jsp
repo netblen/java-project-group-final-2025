@@ -188,33 +188,42 @@
     </div>
 </section>
 
-<!-- Features Section -->
-<section class="bg-light py-5">
-    <div class="container">
-        <h2 class="text-center mb-5">Why Choose Book Master?</h2>
-        <div class="row text-center">
-            <div class="col-md-4 mb-4">
-                <div class="feature-icon">
-                    <i class="fas fa-book-open"></i>
-                </div>
-                <h4>Vast Collection</h4>
-                <p>Thousands of books across all genres to satisfy every reader's taste.</p>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="feature-icon">
-                    <i class="fas fa-truck"></i>
-                </div>
-                <h4>Fast Delivery</h4>
-                <p>Get your books delivered to your doorstep in just 2-3 business days.</p>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="feature-icon">
-                    <i class="fas fa-headset"></i>
-                </div>
-                <h4>24/7 Support</h4>
-                <p>Our customer service team is always ready to assist you.</p>
-            </div>
-        </div>
+<%--<!-- Features Section -->--%>
+<%--<section class="bg-light py-5">--%>
+<%--    <div class="container">--%>
+<%--        <h2 class="text-center mb-5">Why Choose Book Master?</h2>--%>
+<%--        <div class="row text-center">--%>
+<%--            <div class="col-md-4 mb-4">--%>
+<%--                <div class="feature-icon">--%>
+<%--                    <i class="fas fa-book-open"></i>--%>
+<%--                </div>--%>
+<%--                <h4>Vast Collection</h4>--%>
+<%--                <p>Thousands of books across all genres to satisfy every reader's taste.</p>--%>
+<%--            </div>--%>
+<%--            <div class="col-md-4 mb-4">--%>
+<%--                <div class="feature-icon">--%>
+<%--                    <i class="fas fa-truck"></i>--%>
+<%--                </div>--%>
+<%--                <h4>Fast Delivery</h4>--%>
+<%--                <p>Get your books delivered to your doorstep in just 2-3 business days.</p>--%>
+<%--            </div>--%>
+<%--            <div class="col-md-4 mb-4">--%>
+<%--                <div class="feature-icon">--%>
+<%--                    <i class="fas fa-headset"></i>--%>
+<%--                </div>--%>
+<%--                <h4>24/7 Support</h4>--%>
+<%--                <p>Our customer service team is always ready to assist you.</p>--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+<%--</section>--%>
+<section class="container mb-5">
+    <h2 class="text-center mb-4">Featured Books</h2>
+    <div class="row" id="featured-books">
+        <!-- Books will be injected here by JavaScript -->
+    </div>
+    <div class="text-center mt-4">
+        <a href="browse.jsp" class="btn btn-outline-dark btn-lg">View All Books</a>
     </div>
 </section>
 
