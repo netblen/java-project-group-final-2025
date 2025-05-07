@@ -25,13 +25,16 @@ public class BookServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         try {
+            com.example.project.db.SchemaInitializer.initializeSchema();
+
             Connection conn = DbUtil.getConnection();
             bookDao = new BookDaoimpl(conn);
             objectMapper = new ObjectMapper();
         } catch (Exception e) {
-            throw new ServletException("❌ Error initializing CustomerServlet", e);
+            throw new ServletException("❌ Error initializing BookServlet", e);
         }
     }
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
