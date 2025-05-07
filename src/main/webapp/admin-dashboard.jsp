@@ -139,54 +139,6 @@
             padding: 25px;
         }
 
-        /* Stats Cards */
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            display: flex;
-            align-items: center;
-            transition: transform 0.3s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-            font-size: 1.5rem;
-        }
-
-        .stat-info {
-            flex: 1;
-        }
-
-        .stat-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin: 5px 0;
-        }
-
-        .stat-label {
-            color: #6c757d;
-            font-size: 0.9rem;
-        }
-
         /* Table Styles */
         .table-responsive {
             border-radius: 10px;
@@ -232,26 +184,6 @@
             color: var(--primary);
         }
 
-        .badge-success {
-            background-color: rgba(76, 175, 80, 0.1);
-            color: var(--success);
-        }
-
-        .badge-warning {
-            background-color: rgba(255, 193, 7, 0.1);
-            color: #FFA000;
-        }
-
-        .badge-danger {
-            background-color: rgba(244, 67, 54, 0.1);
-            color: var(--danger);
-        }
-
-        .badge-info {
-            background-color: rgba(33, 150, 243, 0.1);
-            color: var(--info);
-        }
-
         /* Button Styles */
         .btn {
             border-radius: 8px;
@@ -277,13 +209,14 @@
             box-shadow: 0 4px 8px rgba(93, 95, 239, 0.2);
         }
 
-        .btn-outline-primary {
-            color: var(--primary);
-            border-color: var(--primary);
+        .btn-danger {
+            background-color: var(--danger);
+            border-color: var(--danger);
         }
 
-        .btn-outline-primary:hover {
-            background-color: var(--primary);
+        .btn-danger:hover {
+            background-color: #D32F2F;
+            border-color: #D32F2F;
         }
 
         /* Form Styles */
@@ -298,31 +231,11 @@
             box-shadow: 0 0 0 0.25rem rgba(93, 95, 239, 0.25);
         }
 
-        /* Search Box */
-        .search-box {
-            margin-bottom: 20px;
-        }
-
-        .search-box .input-group {
-            max-width: 400px;
-        }
-
-        /* Modal Styles */
-        .modal-content {
-            border-radius: 12px;
-            border: none;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        .modal-header {
-            background-color: var(--primary);
-            color: white;
-            border-radius: 12px 12px 0 0 !important;
-            padding: 15px 20px;
-        }
-
-        .modal-title {
-            font-weight: 600;
+        /* Checkbox styles */
+        .form-check-input {
+            width: 20px;
+            height: 20px;
+            margin-top: 0;
         }
 
         /* Responsive Adjustments */
@@ -345,6 +258,25 @@
         .fade-in {
             animation: fadeIn 0.5s ease-out;
         }
+
+        /* Book management specific styles */
+        .add-book-row {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .add-book-row .form-control {
+            margin-bottom: 10px;
+        }
+
+        .available-checkbox {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
     </style>
 </head>
 <body>
@@ -362,33 +294,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#books-section">
+                    <a class="nav-link" href="#">
                         <i class="fas fa-book"></i> Books
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#users-section">
-                        <i class="fas fa-users"></i> Users
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#orders-section">
-                        <i class="fas fa-shopping-cart"></i> Orders
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#inventory-section">
-                        <i class="fas fa-boxes"></i> Inventory
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#reports-section">
-                        <i class="fas fa-chart-bar"></i> Reports
-                    </a>
-                </li>
-                <li class="nav-item mt-4">
                     <a class="nav-link" href="index.jsp" method="POST">
-                        <i class="fas fa-sign-out-alt"></i> Logout
+                        <i class="fas fa-sign-out-alt"></i> Home
                     </a>
                 </li>
             </ul>
@@ -399,7 +311,7 @@
     <div class="main-content">
         <!-- Header -->
         <div class="header-bar fade-in">
-            <h5 class="mb-0"><i class="fas fa-tachometer-alt me-2"></i>Admin Dashboard</h5>
+            <h5 class="mb-0"><i class="fas fa-tachometer-alt me-2"></i>Book Management Dashboard</h5>
             <div class="user-profile">
                 <div class="user-avatar">${currentUser.name.charAt(0)}</div>
                 <div>
@@ -409,324 +321,65 @@
             </div>
         </div>
 
-        <!-- Stats Cards -->
-        <div class="stats-container fade-in">
-            <div class="stat-card">
-                <div class="stat-icon bg-primary bg-opacity-10 text-primary">
-                    <i class="fas fa-book"></i>
-                </div>
-                <div class="stat-info">
-                    <div class="stat-value text-primary">${inventoryStats.totalBooks}</div>
-                    <div class="stat-label">Total Books</div>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon bg-success bg-opacity-10 text-success">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-                <div class="stat-info">
-                    <div class="stat-value text-success">${inventoryStats.inStock}</div>
-                    <div class="stat-label">In Stock</div>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon bg-warning bg-opacity-10 text-warning">
-                    <i class="fas fa-exclamation-triangle"></i>
-                </div>
-                <div class="stat-info">
-                    <div class="stat-value text-warning">${inventoryStats.lowStock}</div>
-                    <div class="stat-label">Low Stock</div>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon bg-danger bg-opacity-10 text-danger">
-                    <i class="fas fa-times-circle"></i>
-                </div>
-                <div class="stat-info">
-                    <div class="stat-value text-danger">${inventoryStats.outOfStock}</div>
-                    <div class="stat-label">Out of Stock</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="row mb-4 fade-in">
-            <div class="col-md-12">
-                <div class="dashboard-card">
-                    <div class="card-header">
-                        <span><i class="fas fa-bolt me-2"></i>Quick Actions</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex flex-wrap gap-2">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBookModal">
-                                <i class="fas fa-plus me-2"></i>Add Book
-                            </button>
-                            <button class="btn btn-outline-primary">
-                                <i class="fas fa-file-import me-2"></i>Import Books
-                            </button>
-                            <button class="btn btn-outline-primary">
-                                <i class="fas fa-file-export me-2"></i>Export Data
-                            </button>
-                            <button class="btn btn-outline-primary">
-                                <i class="fas fa-bell me-2"></i>View Alerts
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Books Section -->
-        <div class="dashboard-card fade-in" id="books-section">
+        <!-- Book Management Section -->
+        <div class="dashboard-card fade-in">
             <div class="card-header">
                 <span><i class="fas fa-book me-2"></i>Book Management</span>
-                <div class="search-box">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search books..." id="bookSearch">
-                        <button class="btn btn-outline-secondary" type="button">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </div>
             </div>
             <div class="card-body">
+                <!-- Add New Book Form -->
+                <div class="add-book-row mb-4">
+                    <h5><i class="fas fa-plus-circle me-2"></i> Add New Book</h5>
+                    <form id="add-book-form" onsubmit="return addBook();" class="row g-3">
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="new-title" placeholder="Title" required>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" id="new-author" placeholder="Author" required>
+                        </div>
+                        <div class="col-md-1">
+                            <input type="number" class="form-control" id="new-price" placeholder="Price" required step="0.01">
+                        </div>
+                        <div class="col-md-1">
+                            <input type="number" class="form-control" id="new-stock" placeholder="Stock" required>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" id="new-genres" placeholder="Genres (comma-separated)" required>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-check available-checkbox">
+                                <input class="form-check-input" type="checkbox" id="new-available">
+                                <label class="form-check-label ms-2" for="new-available">Available</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-plus me-2"></i>Add Book
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Books Table -->
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Cover</th>
                             <th>Title</th>
                             <th>Author</th>
-                            <th>Genre</th>
-                            <th>Price</th>
+                            <th>Price ($)</th>
                             <th>Stock</th>
-                            <th>Status</th>
+                            <th class="text-center">Available</th>
+                            <th>Genres</th>
                             <th>Actions</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <c:forEach var="book" items="${books}">
-                            <tr>
-                                <td>${book.bookId}</td>
-                                <td>
-                                    <div class="bg-light rounded" style="width: 40px; height: 50px; display: flex; align-items: center; justify-content: center;">
-                                        <i class="fas fa-book text-muted"></i>
-                                    </div>
-                                </td>
-                                <td class="fw-bold">${book.title}</td>
-                                <td>${book.author}</td>
-                                <td>
-                                    <c:forEach var="genre" items="${book.genres}">
-                                        <span class="badge bg-primary bg-opacity-10 text-primary me-1">${genre.genreName}</span>
-                                    </c:forEach>
-                                </td>
-                                <td class="fw-bold">$${book.bookPrice}</td>
-                                <td>
-                                    <form class="d-inline update-stock-form" data-bookid="${book.bookId}">
-                                        <div class="input-group input-group-sm" style="width: 100px;">
-                                            <input type="number" value="${book.stock}" class="form-control" name="newStock">
-                                            <button class="btn btn-outline-primary" type="submit">
-                                                <i class="fas fa-save"></i>
-                                            </button>
-                                        </div>
-                                    </form>
-                                </td>
-                                <td>
-                                    <span class="badge ${book.stock > 5 ? 'badge-success' : book.stock > 0 ? 'badge-warning' : 'badge-danger'}">
-                                            ${book.stock > 5 ? 'In Stock' : book.stock > 0 ? 'Low Stock' : 'Out of Stock'}
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <button class="btn btn-sm btn-outline-primary edit-book" data-bookid="${book.bookId}">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-danger delete-book" data-bookid="${book.bookId}">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </c:forEach>
+                        <tbody id="book-table-body">
+                        <!-- Rows will be loaded here dynamically -->
                         </tbody>
                     </table>
                 </div>
             </div>
-        </div>
-
-        <!-- Users and Orders Section -->
-        <div class="row fade-in">
-            <div class="col-md-6">
-                <div class="dashboard-card" id="users-section">
-                    <div class="card-header">
-                        <span><i class="fas fa-users me-2"></i>User Management</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Type</th>
-                                    <th>Actions</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach var="user" items="${users}">
-                                    <tr>
-                                        <td>${user.customerId}</td>
-                                        <td>${user.name}</td>
-                                        <td>${user.email}</td>
-                                        <td>
-                                            <span class="badge ${user.userType == 'admin' ? 'badge-primary' : 'badge-info'}">
-                                                    ${user.userType}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex gap-2">
-                                                <c:if test="${user.userType != 'admin'}">
-                                                    <button class="btn btn-sm btn-outline-success make-admin" data-userid="${user.customerId}">
-                                                        <i class="fas fa-user-shield"></i>
-                                                    </button>
-                                                </c:if>
-                                                <button class="btn btn-sm btn-outline-danger delete-user" data-userid="${user.customerId}">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="dashboard-card" id="orders-section">
-                    <div class="card-header">
-                        <span><i class="fas fa-shopping-cart me-2"></i>Recent Orders</span>
-                        <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>Order ID</th>
-                                    <th>Customer</th>
-                                    <th>Total</th>
-                                    <th>Status</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach var="order" items="${recentOrders}">
-                                    <tr>
-                                        <td class="fw-bold">#${order.orderId}</td>
-                                        <td>${order.customerName}</td>
-                                        <td class="fw-bold">$${order.totalPrice}</td>
-                                        <td>
-                                            <span class="badge ${order.orderStatus == 'Shipped' ? 'badge-success' :
-                                                  order.orderStatus == 'Processing' ? 'badge-warning' : 'badge-danger'}">
-                                                    ${order.orderStatus}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Add Book Modal -->
-<div class="modal fade" id="addBookModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title"><i class="fas fa-plus-circle me-2"></i> Add New Book</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <form id="addBookForm" action="addBook" method="POST" enctype="multipart/form-data">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label">Title <span class="text-danger">*</span></label>
-                                <input type="text" name="title" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Author <span class="text-danger">*</span></label>
-                                <input type="text" name="author" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Price <span class="text-danger">*</span></label>
-                                <input type="number" step="0.01" name="price" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Stock Quantity <span class="text-danger">*</span></label>
-                                <input type="number" name="stock" class="form-control" required>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label">Description</label>
-                                <textarea name="description" class="form-control" rows="3"></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Genre <span class="text-danger">*</span></label>
-                                <select name="genre" class="form-select" required>
-                                    <option value="">Select Genre</option>
-                                    <c:forEach var="genre" items="${genres}">
-                                        <option value="${genre.genreId}">${genre.genreName}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Book Cover</label>
-                                <input type="file" name="coverImage" class="form-control" accept="image/*">
-                            </div>
-                            <div class="form-check form-switch mb-3">
-                                <input class="form-check-input" type="checkbox" name="isAvailable" id="isAvailable" checked>
-                                <label class="form-check-label" for="isAvailable">Available for purchase</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Add Book</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Edit Book Modal (Dynamic content will be loaded here) -->
-<div class="modal fade" id="editBookModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title"><i class="fas fa-edit me-2"></i> Edit Book</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <form id="editBookForm" action="updateBook" method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="bookId" id="editBookId">
-                <div class="modal-body" id="editBookModalBody">
-                    <!-- Content will be loaded via AJAX -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                </div>
-            </form>
         </div>
     </div>
 </div>
@@ -735,168 +388,205 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script>
-    $(document).ready(function() {
-        // Initialize Toastr
-        toastr.options = {
-            "closeButton": true,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "timeOut": "3000"
-        };
+    // Initialize Toastr
+    toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "timeOut": "3000"
+    };
 
-        // Real-time stock updates
-        $('.update-stock-form').on('submit', function(e) {
-            e.preventDefault();
-            const form = $(this);
-            const bookId = form.data('bookid');
-            const newStock = form.find('input[name="newStock"]').val();
+    async function loadBooks() {
+        try {
+            const response = await fetch('books');
+            const books = await response.json();
 
-            $.ajax({
-                url: 'updateStock',
+            const tableBody = document.getElementById('book-table-body');
+            tableBody.innerHTML = "";
+
+            books.forEach(book => {
+                const row = document.createElement('tr');
+
+                // Title Cell
+                const titleCell = document.createElement('td');
+                const titleInput = document.createElement('input');
+                titleInput.type = 'text';
+                titleInput.className = 'form-control form-control-sm';
+                titleInput.value = book.title;
+                titleInput.onchange = () => updateValue(titleInput, book.bookId, 'title');
+                titleCell.appendChild(titleInput);
+
+                // Author Cell
+                const authorCell = document.createElement('td');
+                const authorInput = document.createElement('input');
+                authorInput.type = 'text';
+                authorInput.className = 'form-control form-control-sm';
+                authorInput.value = book.author;
+                authorInput.onchange = () => updateValue(authorInput, book.bookId, 'author');
+                authorCell.appendChild(authorInput);
+
+                // Price Cell
+                const priceCell = document.createElement('td');
+                const priceInput = document.createElement('input');
+                priceInput.type = 'number';
+                priceInput.className = 'form-control form-control-sm';
+                priceInput.value = book.bookPrice;
+                priceInput.step = "0.01";
+                priceInput.onchange = () => updateValue(priceInput, book.bookId, 'bookPrice');
+                priceCell.appendChild(priceInput);
+
+                // Stock Cell
+                const stockCell = document.createElement('td');
+                const stockInput = document.createElement('input');
+                stockInput.type = 'number';
+                stockInput.className = 'form-control form-control-sm';
+                stockInput.value = book.stock;
+                stockInput.onchange = () => updateValue(stockInput, book.bookId, 'stock');
+                stockCell.appendChild(stockInput);
+
+                // Available Cell
+                const availableCell = document.createElement('td');
+                availableCell.className = 'text-center';
+                const availableCheckbox = document.createElement('input');
+                availableCheckbox.type = 'checkbox';
+                availableCheckbox.className = 'form-check-input';
+                availableCheckbox.checked = book.available;
+                availableCheckbox.onchange = () => updateCheckbox(book.bookId, 'available', availableCheckbox.checked);
+                availableCell.appendChild(availableCheckbox);
+
+                // Genres Cell
+                const genresCell = document.createElement('td');
+                genresCell.textContent = book.genres.join(", ");
+
+                // Actions Cell
+                const actionsCell = document.createElement('td');
+                const deleteButton = document.createElement('button');
+                deleteButton.className = 'btn btn-sm btn-danger';
+                deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
+                deleteButton.onclick = () => deleteBook(book.bookId);
+                actionsCell.appendChild(deleteButton);
+
+                // Append all cells to row
+                row.appendChild(titleCell);
+                row.appendChild(authorCell);
+                row.appendChild(priceCell);
+                row.appendChild(stockCell);
+                row.appendChild(availableCell);
+                row.appendChild(genresCell);
+                row.appendChild(actionsCell);
+
+                tableBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error("Error loading books:", error);
+            toastr.error("Failed to load books");
+        }
+    }
+
+    async function deleteBook(bookId) {
+        const confirmed = confirm("Are you sure you want to delete this book?");
+        if (!confirmed) return;
+
+        try {
+            await fetch('books?code=' + bookId, {
+                method: 'DELETE'
+            });
+            toastr.success('Book deleted successfully');
+            loadBooks();
+        } catch (error) {
+            console.error("Error deleting book:", error);
+            toastr.error("Failed to delete book");
+        }
+    }
+
+    async function updateCheckbox(bookId, field, value) {
+        try {
+            const res = await fetch('books?code=' + bookId);
+            const book = await res.json();
+
+            book[field] = value;
+
+            await fetch('books', {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(book)
+            });
+
+            toastr.success('Book updated successfully');
+            loadBooks();
+        } catch (error) {
+            console.error("Error updating checkbox:", error);
+            toastr.error("Failed to update book");
+        }
+    }
+
+    async function addBook() {
+        try {
+            const title = document.getElementById('new-title').value;
+            const author = document.getElementById('new-author').value;
+            const price = parseFloat(document.getElementById('new-price').value);
+            const stock = parseInt(document.getElementById('new-stock').value);
+            const available = document.getElementById('new-available').checked;
+            const genresStr = document.getElementById('new-genres').value;
+            const genres = genresStr.split(',').map(g => g.trim()).filter(g => g.length > 0);
+
+            const newBook = {
+                title,
+                author,
+                bookPrice: price,
+                stock,
+                available,
+                genres
+            };
+
+            await fetch('books', {
                 method: 'POST',
-                data: { bookId: bookId, newStock: newStock },
-                success: function(response) {
-                    toastr.success('Stock updated successfully');
-                    // Update status badge
-                    const badge = form.closest('tr').find('.badge');
-                    badge.removeClass('badge-success badge-warning badge-danger');
-
-                    if(newStock > 5) {
-                        badge.addClass('badge-success').text('In Stock');
-                    } else if(newStock > 0) {
-                        badge.addClass('badge-warning').text('Low Stock');
-                    } else {
-                        badge.addClass('badge-danger').text('Out of Stock');
-                    }
-                },
-                error: function() {
-                    toastr.error('Error updating stock');
-                }
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(newBook)
             });
-        });
 
-        // Make user admin
-        $('.make-admin').click(function() {
-            const userId = $(this).data('userid');
-            const button = $(this);
+            document.getElementById('add-book-form').reset();
+            toastr.success('Book added successfully');
+            loadBooks();
+        } catch (error) {
+            console.error("Error adding book:", error);
+            toastr.error("Failed to add book");
+        }
+        return false;
+    }
 
-            if(confirm('Are you sure you want to make this user an admin?')) {
-                $.ajax({
-                    url: 'makeAdmin',
-                    method: 'POST',
-                    data: { userId: userId },
-                    success: function(response) {
-                        toastr.success('User promoted to admin');
-                        // Update the UI without reloading
-                        button.closest('tr').find('.badge')
-                            .removeClass('badge-info')
-                            .addClass('badge-primary')
-                            .text('admin');
-                        button.remove();
-                    },
-                    error: function() {
-                        toastr.error('Error promoting user');
-                    }
-                });
+    async function updateValue(input, bookId, field) {
+        try {
+            const res = await fetch('books?code=' + bookId);
+            const book = await res.json();
+            book[field] = input.type === "number" ? parseFloat(input.value) : input.value;
+            if (typeof book.available !== 'boolean') {
+                book.available = false;
             }
-        });
 
-        // Delete book
-        $('.delete-book').click(function() {
-            const bookId = $(this).data('bookid');
-            const row = $(this).closest('tr');
-
-            if(confirm('Are you sure you want to delete this book? This action cannot be undone.')) {
-                $.ajax({
-                    url: 'deleteBook',
-                    method: 'POST',
-                    data: { bookId: bookId },
-                    success: function(response) {
-                        toastr.success('Book deleted successfully');
-                        row.fadeOut(300, function() {
-                            $(this).remove();
-                        });
-                    },
-                    error: function() {
-                        toastr.error('Error deleting book');
-                    }
-                });
+            if (!Array.isArray(book.genres)) {
+                book.genres = [];
             }
-        });
 
-        // Delete user
-        $('.delete-user').click(function() {
-            const userId = $(this).data('userid');
-            const row = $(this).closest('tr');
+            const response = await fetch('books', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(book)
+            });
 
-            if(confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
-                $.ajax({
-                    url: 'deleteUser',
-                    method: 'POST',
-                    data: { userId: userId },
-                    success: function(response) {
-                        toastr.success('User deleted successfully');
-                        row.fadeOut(300, function() {
-                            $(this).remove();
-                        });
-                    },
-                    error: function() {
-                        toastr.error('Error deleting user');
-                    }
-                });
+            if (!response.ok) {
+                throw new Error('Update failed');
             }
-        });
 
-        // Book search
-        $('#bookSearch').keyup(function() {
-            const searchText = $(this).val().toLowerCase();
-            $('table tbody tr').each(function() {
-                const rowText = $(this).text().toLowerCase();
-                $(this).toggle(rowText.indexOf(searchText) > -1);
-            });
-        });
+            toastr.success('Book updated successfully');
+            loadBooks();
+        } catch (error) {
+            console.error("Error updating value:", error);
+            toastr.error("Failed to update book");
+        }
+    }
 
-        // Edit book modal
-        $('.edit-book').click(function() {
-            const bookId = $(this).data('bookid');
-
-            $.ajax({
-                url: 'getBookDetails',
-                method: 'GET',
-                data: { bookId: bookId },
-                success: function(response) {
-                    $('#editBookId').val(bookId);
-                    $('#editBookModalBody').html(response);
-                    $('#editBookModal').modal('show');
-                },
-                error: function() {
-                    toastr.error('Error loading book details');
-                }
-            });
-        });
-
-        // Handle edit form submission
-        $('#editBookForm').on('submit', function(e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-
-            $.ajax({
-                url: 'updateBook',
-                method: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    toastr.success('Book updated successfully');
-                    $('#editBookModal').modal('hide');
-                    setTimeout(() => location.reload(), 1000);
-                },
-                error: function() {
-                    toastr.error('Error updating book');
-                }
-            });
-        });
-    });
+    window.onload = loadBooks;
 </script>
 </body>
 </html>
