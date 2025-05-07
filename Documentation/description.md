@@ -24,7 +24,6 @@ Book Master is a web-based application that is supposed to assist with inventory
 
 -	Customer registration and login
 -	Admin accounts for store management
--	User profiles with order history
 
 
 ## 	Shopping Features
@@ -34,11 +33,6 @@ Book Master is a web-based application that is supposed to assist with inventory
 -	Order confirmation
 
 
-## 	Inventory Control
-
--	Track stock levels
--	Update inventory automatically after sales
--	Low stock notifications
 
 
 ## 	Categories and Organization
